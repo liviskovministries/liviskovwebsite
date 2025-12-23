@@ -2,14 +2,56 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useState, useRef } from "react";
+import { supabase } from "@/lib/supabase/client";
+import { toast } from "sonner";
+import { Upload } from "lucide-react";
+import { Toaster } from "@/components/ui/sonner"; // Importar Toaster
 
 export default function LiviSkoviPage() {
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      toast.error("Nenhum arquivo selecionado.");
+      return;
+    }
+
+    const toastId = toast.loading("Fazendo upload do vídeo...");
+
+    try {
+      const { data, error } = await supabase.storage
+        .from("videos") // Use o nome do seu bucket aqui
+        .upload(`public/${file.name}`, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      // Obter a URL pública do vídeo
+      const { data: publicUrlData } = supabase.storage
+        .from("videos")
+        .getPublicUrl(data.path);
+
+      setVideoUrl(publicUrlData.publicUrl);
+      toast.success("Vídeo enviado com sucesso!", { id: toastId });
+    } catch (error: any) {
+      console.error("Erro ao fazer upload do vídeo:", error.message);
+      toast.error(`Erro ao fazer upload: ${error.message}`, { id: toastId });
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-start p-4 overflow-hidden">
       {/* Background Image */}
       <Image
-        src="/outono-background.jpg" // Caminho da nova imagem
-        alt="Outono Background" // Alt text atualizado
+        src="/outono-background.jpg"
+        alt="Outono Background"
         layout="fill"
         objectFit="cover"
         quality={100}
@@ -24,9 +66,8 @@ export default function LiviSkoviPage() {
         <Image
           src="/livi-skovi-logo.png"
           alt="Livi Skovi Logo"
-          width={800} // Largura ajustada (200 * 4)
-          height={400} // Altura ajustada (100 * 4)
-          // Removida a classe mb-8 para reduzir o espaçamento
+          width={800}
+          height={400}
         />
 
         {/* Título e Subtítulo */}
@@ -36,18 +77,40 @@ export default function LiviSkoviPage() {
 
         {/* Video Element */}
         <div className="w-full max-w-xs sm:max-w-sm md:max-w-md aspect-[9/16] bg-gray-800 rounded-lg shadow-lg overflow-hidden flex items-center justify-center">
-          <video
-            src="/your-video-name.mp4" // *** SUBSTITUA ESTE CAMINHO PELO NOME DO SEU ARQUIVO DE VÍDEO NA PASTA PUBLIC ***
-            controls
-            loop
-            muted
-            autoPlay
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            Seu navegador não suporta o elemento de vídeo.
-          </video>
+          {videoUrl ? (
+            <video
+              src={videoUrl}
+              controls
+              loop
+              muted
+              autoPlay
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              Seu navegador não suporta o elemento de vídeo.
+            </video>
+          ) : (
+            <div className="text-custom-white text-sm">
+              Faça o upload de um vídeo para visualizá-lo.
+            </div>
+          )}
         </div>
+
+        {/* Input de arquivo e botão de upload */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileUpload}
+          accept="video/*"
+          className="hidden"
+        />
+        <Button
+          className="bg-blue-600 hover:bg-blue-700 text-custom-white font-clear-sans text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 ease-in-out flex items-center space-x-2"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <Upload className="h-5 w-5" />
+          <span>Upload de Vídeo</span>
+        </Button>
 
         {/* Botão para o Formulário */}
         <Button
@@ -57,6 +120,7 @@ export default function LiviSkoviPage() {
           Acessar Formulário
         </Button>
       </main>
+      <Toaster /> {/* Adicione o Toaster aqui para exibir as notificações */}
     </div>
   );
 }
