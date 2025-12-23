@@ -22,9 +22,6 @@ export default function LiviSkoviPage() {
       <main className="relative z-20 flex flex-col items-center justify-center h-full w-full max-w-md mx-auto text-center space-y-8">
         {/* Título e Subtítulo */}
         <div className="text-custom-white">
-          <h1 className="font-tan-garland text-5xl md:text-6xl font-bold mb-2">
-            Livi Domitila Skov
-          </h1>
           <p className="font-clear-sans text-lg md:text-xl tracking-widest uppercase">
             International Pastor
           </p>
