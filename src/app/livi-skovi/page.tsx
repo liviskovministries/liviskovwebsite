@@ -22,9 +22,7 @@ export default function LiviSkoviPage() {
       <main className="relative z-20 flex flex-col items-center justify-center h-full w-full max-w-md mx-auto text-center space-y-8">
         {/* Título e Subtítulo */}
         <div className="text-custom-white">
-          <p className="font-clear-sans text-lg md:text-xl tracking-widest uppercase">
-            International Pastor
-          </p>
+          {/* Este div agora está vazio, mas pode ser útil para futuros elementos de texto */}
         </div>
 
         {/* Video Placeholder */}
