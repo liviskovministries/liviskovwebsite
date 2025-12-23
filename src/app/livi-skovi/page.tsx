@@ -47,7 +47,6 @@ export default function LiviSkoviPage() {
               src={videoUrl}
               controls
               loop
-              muted
               autoPlay
               playsInline
               className="w-full h-full object-cover"
