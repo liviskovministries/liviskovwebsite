@@ -8,8 +8,8 @@ export default function LiviSkoviPage() {
     <div className="relative min-h-screen flex flex-col items-center justify-start p-4 overflow-hidden">
       {/* Background Image */}
       <Image
-        src="/livi-skovi-background.jpg"
-        alt="Livi Skovi Background"
+        src="/outono-background.jpg" // Caminho da nova imagem
+        alt="Outono Background" // Alt text atualizado
         layout="fill"
         objectFit="cover"
         quality={100}
