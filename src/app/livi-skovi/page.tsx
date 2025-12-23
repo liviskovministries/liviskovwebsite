@@ -34,12 +34,10 @@ export default function LiviSkoviPage() {
           {/* Este div agora está vazio, mas pode ser útil para futuros elementos de texto */}
         </div>
 
-        {/* Video Placeholder */}
+        {/* Video Element */}
         <div className="w-full max-w-xs sm:max-w-sm md:max-w-md aspect-[9/16] bg-gray-800 rounded-lg shadow-lg overflow-hidden flex items-center justify-center">
-          {/* Substitua este div pelo seu elemento <video> real */}
-          {/* Exemplo:
           <video
-            src="/your-tiktok-style-video.mp4"
+            src="/your-video-name.mp4" // *** SUBSTITUA ESTE CAMINHO PELO NOME DO SEU ARQUIVO DE VÍDEO NA PASTA PUBLIC ***
             controls
             loop
             muted
@@ -49,10 +47,6 @@ export default function LiviSkoviPage() {
           >
             Seu navegador não suporta o elemento de vídeo.
           </video>
-          */}
-          <p className="text-custom-white font-clear-sans text-sm">
-            Espaço para o vídeo (substitua este texto pelo seu vídeo)
-          </p>
         </div>
 
         {/* Botão para o Formulário */}
