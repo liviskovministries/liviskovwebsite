@@ -16,7 +16,7 @@ interface Database {
     Tables: {
       pre_sales: {
         Row: PreSales;
-        Insert: Partial<PreSales>;
+        Insert: PreSales;
         Update: Partial<PreSales>;
       };
     };

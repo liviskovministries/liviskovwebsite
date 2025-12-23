@@ -6,13 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase/client";
+import { supabase, type Database } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Copy, AlertTriangle, RefreshCw, Database } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Copy, AlertTriangle, RefreshCw, Database as DatabaseIcon } from "lucide-react";
 import { SetupTableButton } from "@/components/setup-table-button";
 
 const formSchema = z.object({
@@ -68,7 +68,7 @@ export default function PreSalePage() {
             name: data.name,
             email: data.email,
             whatsapp: data.whatsapp,
-          },
+          } as Database['public']['Tables']['pre_sales']['Insert']
         ])
         .select();
 
@@ -200,7 +200,7 @@ export default function PreSalePage() {
               </CardContent>
               <CardFooter className="flex flex-col gap-2">
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <Database className="h-4 w-4" />
+                  <DatabaseIcon className="h-4 w-4" />
                   <span>Configuração do banco de dados</span>
                 </div>
                 <SetupTableButton />
