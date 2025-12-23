@@ -29,42 +29,43 @@ export default function PreSalePage() {
   const router = useRouter();
 
   useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    
-    console.log("Supabase URL configurada:", url ? `${url.substring(0, 15)}...` : "Não encontrada");
-    
-    if (!url || !key || url === "" || key === "") {
+    // Verifica se o cliente do Supabase foi criado corretamente
+    if (!supabase) {
       setIsConfigured(false);
+      console.error("Cliente do Supabase não foi criado. Verifique as variáveis de ambiente.");
     }
   }, []);
 
-  const {
-    register,
-    handleSubmit,
+  const { 
+    register, 
+    handleSubmit, 
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (data: FormValues) => {
-    if (!isConfigured) {
+    if (!isConfigured || !supabase) {
       toast.error("Supabase não configurado. Adicione as chaves de API.");
       return;
     }
 
     setIsLoading(true);
+    
     try {
       console.log("Tentando inserir dados:", data);
       
       // Tenta inserir os dados
-      const { data: insertedData, error: supabaseError } = await supabase.from("pre_sales").insert([
-        {
-          name: data.name,
-          email: data.email,
-          whatsapp: data.whatsapp,
-        },
-      ]).select();
+      const { data: insertedData, error: supabaseError } = await supabase
+        .from("pre_sales")
+        .insert([
+          {
+            name: data.name,
+            email: data.email,
+            whatsapp: data.whatsapp,
+          },
+        ])
+        .select();
 
       if (supabaseError) {
         console.error("Erro detalhado do Supabase:", supabaseError);
@@ -80,7 +81,6 @@ export default function PreSalePage() {
       console.error("Erro na submissão:", error);
       console.error("Tipo do erro capturado:", typeof error);
       console.error("JSON do erro capturado:", JSON.stringify(error, null, 2));
-      
       toast.error(error.message || "Erro ao conectar com o banco de dados.");
     } finally {
       setIsLoading(false);
@@ -95,25 +95,23 @@ export default function PreSalePage() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center p-4">
-      <Image
-        src="/outono-background.jpg"
-        alt="Background"
-        fill
-        className="object-cover z-0"
-        priority
+      <Image 
+        src="/outono-background.jpg" 
+        alt="Background" 
+        fill 
+        className="object-cover z-0" 
+        priority 
       />
       <div className="absolute inset-0 bg-black/70 z-10" />
-
       <div className="relative z-20 w-full max-w-md">
-        <Button
-          variant="ghost"
+        <Button 
+          variant="ghost" 
           className="text-white mb-4 hover:bg-white/10"
           onClick={() => step === "payment" ? setStep("form") : router.back()}
         >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Voltar
+          <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
         </Button>
-
+        
         {!isConfigured && (
           <div className="bg-amber-100 border-l-4 border-amber-500 p-4 mb-4 rounded shadow-md flex items-start gap-3">
             <AlertTriangle className="text-amber-600 shrink-0 mt-1" size={20} />
@@ -123,7 +121,7 @@ export default function PreSalePage() {
             </div>
           </div>
         )}
-
+        
         <Card className="bg-white/95 backdrop-blur shadow-2xl border-none">
           {step === "form" ? (
             <>
@@ -135,24 +133,37 @@ export default function PreSalePage() {
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Nome Completo</Label>
-                    <Input id="name" placeholder="Seu nome" {...register("name")} />
+                    <Input 
+                      id="name" 
+                      placeholder="Seu nome" 
+                      {...register("name")} 
+                    />
                     {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
                   </div>
-
+                  
                   <div className="space-y-2">
                     <Label htmlFor="email">E-mail</Label>
-                    <Input id="email" type="email" placeholder="seu@email.com" {...register("email")} />
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      placeholder="seu@email.com" 
+                      {...register("email")} 
+                    />
                     {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
                   </div>
-
+                  
                   <div className="space-y-2">
                     <Label htmlFor="whatsapp">WhatsApp / Telefone</Label>
-                    <Input id="whatsapp" placeholder="(00) 00000-0000" {...register("whatsapp")} />
+                    <Input 
+                      id="whatsapp" 
+                      placeholder="(00) 00000-0000" 
+                      {...register("whatsapp")} 
+                    />
                     {errors.whatsapp && <p className="text-xs text-red-500">{errors.whatsapp.message}</p>}
                   </div>
-
-                  <Button
-                    type="submit"
+                  
+                  <Button 
+                    type="submit" 
                     className="w-full bg-custom-green hover:bg-custom-green/90 text-white py-6 text-lg rounded-xl mt-4"
                     disabled={isLoading || !isConfigured}
                   >
@@ -177,11 +188,11 @@ export default function PreSalePage() {
               </CardHeader>
               <CardContent className="flex flex-col items-center space-y-6">
                 <div className="relative w-64 h-64 bg-gray-100 rounded-lg overflow-hidden border-4 border-white shadow-md">
-                  <Image
-                    src="/pix-qr-code.png"
-                    alt="QR Code PIX"
-                    fill
-                    className="object-contain"
+                  <Image 
+                    src="/pix-qr-code.png" 
+                    alt="QR Code PIX" 
+                    fill 
+                    className="object-contain" 
                   />
                 </div>
                 
@@ -194,12 +205,12 @@ export default function PreSalePage() {
                     </Button>
                   </div>
                 </div>
-
+                
                 <div className="bg-blue-50 p-4 rounded-lg text-xs text-blue-800 leading-relaxed text-center">
                   Após o pagamento, envie o comprovante para nosso WhatsApp para liberação imediata.
                 </div>
-
-                <Button
+                
+                <Button 
                   className="w-full bg-custom-green hover:bg-custom-green/90 text-white rounded-xl py-6"
                   onClick={() => router.push("/livi-skovi")}
                 >
