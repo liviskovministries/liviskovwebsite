@@ -42,17 +42,12 @@ export default function PreSalePage() {
     }
   }, []);
 
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors },
-  } = useForm<FormValues>({
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (data: FormValues) => {
     console.log("Iniciando submissão do formulário...");
-    
     if (!isConfigured || !supabase) {
       console.error("Supabase não configurado");
       toast.error("Supabase não configurado. Adicione as chaves de API.");
@@ -60,11 +55,8 @@ export default function PreSalePage() {
     }
 
     setIsLoading(true);
-    
     try {
       console.log("Tentando inserir dados:", data);
-      
-      // Verifica se o cliente está funcionando
       console.log("Cliente Supabase:", supabase);
       
       // Tenta inserir os dados diretamente
@@ -96,7 +88,7 @@ export default function PreSalePage() {
         }
         return;
       }
-
+      
       console.log("Dados inseridos com sucesso:", insertedData);
       toast.success("Dados salvos com sucesso!");
       setStep("payment");
@@ -131,6 +123,7 @@ export default function PreSalePage() {
         priority 
       />
       <div className="absolute inset-0 bg-black/70 z-10" />
+      
       <div className="relative z-20 w-full max-w-md">
         <Button 
           variant="ghost" 
