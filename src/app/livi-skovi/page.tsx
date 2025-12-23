@@ -6,10 +6,11 @@ import { useState, useRef } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { Upload } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner"; // Importar Toaster
+import { Toaster } from "@/components/ui/sonner";
 
 export default function LiviSkoviPage() {
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  // Inicializa videoUrl com a URL fornecida pelo usuário
+  const [videoUrl, setVideoUrl] = useState<string | null>("https://fgnxnvfycbzyjgnprskc.supabase.co/storage/v1/object/sign/videos/livi.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV81ZDhjZWVkMC02MmQyLTQzMWYtYmY5Yy1lMjE3NTMxMDk0NzEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2aWRlb3MvbGl2aS5tcDQiLCJpYXQiOjE3NjY1MTkwNjcsImV4cCI6MTc5ODA1NTA2N30.V8G5Zt19mJwWrgKBcQONW3NufnCXpx5gvre1NHYbuBs");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
