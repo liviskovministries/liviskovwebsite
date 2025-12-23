@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Copy, AlertTriangle } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Copy, AlertTriangle, RefreshCw } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
@@ -31,6 +31,9 @@ export default function PreSalePage() {
   useEffect(() => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    console.log("Supabase URL configurada:", url ? `${url.substring(0, 15)}...` : "Não encontrada");
+    
     if (!url || !key || url === "" || key === "") {
       setIsConfigured(false);
     }
@@ -52,6 +55,7 @@ export default function PreSalePage() {
 
     setIsLoading(true);
     try {
+      // Tenta inserir os dados
       const { error: supabaseError } = await supabase.from("pre_sales").insert([
         {
           name: data.name,
@@ -61,16 +65,20 @@ export default function PreSalePage() {
       ]);
 
       if (supabaseError) {
-        console.error("Erro detalhado do Supabase:", supabaseError);
-        throw new Error(supabaseError.message || "Erro desconhecido no banco de dados");
+        console.error("Erro retornado pelo Supabase:", supabaseError);
+        throw new Error(supabaseError.message);
       }
 
       toast.success("Dados salvos com sucesso!");
       setStep("payment");
     } catch (error: any) {
       console.error("Erro na submissão:", error);
-      const errorMessage = error.message || "Erro de conexão com o banco de dados.";
-      toast.error(errorMessage);
+      
+      if (error.message?.includes("Could not find the table")) {
+        toast.error("Erro: A tabela 'pre_sales' não foi encontrada no banco.");
+      } else {
+        toast.error(error.message || "Erro ao conectar com o banco de dados.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -108,7 +116,7 @@ export default function PreSalePage() {
             <AlertTriangle className="text-amber-600 shrink-0 mt-1" size={20} />
             <div>
               <p className="text-amber-800 font-bold text-sm">Atenção!</p>
-              <p className="text-amber-700 text-xs">Variáveis do Supabase não detectadas. O formulário não irá funcionar até que você as configure.</p>
+              <p className="text-amber-700 text-xs">Variáveis do Supabase não detectadas.</p>
             </div>
           </div>
         )}
@@ -145,7 +153,12 @@ export default function PreSalePage() {
                     className="w-full bg-custom-green hover:bg-custom-green/90 text-white py-6 text-lg rounded-xl mt-4"
                     disabled={isLoading || !isConfigured}
                   >
-                    {isLoading ? "Processando..." : "Ir para Pagamento"}
+                    {isLoading ? (
+                      <span className="flex items-center gap-2">
+                        <RefreshCw className="animate-spin h-4 w-4" />
+                        Processando...
+                      </span>
+                    ) : "Ir para Pagamento"}
                   </Button>
                 </form>
               </CardContent>
