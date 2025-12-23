@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function LiviSkoviPage() {
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
+    <div className="relative min-h-screen flex flex-col items-center justify-start p-4 overflow-hidden">
       {/* Background Image */}
       <Image
         src="/livi-skovi-background.jpg"
@@ -19,7 +19,7 @@ export default function LiviSkoviPage() {
       {/* Overlay para escurecer a imagem e melhorar a legibilidade */}
       <div className="absolute inset-0 bg-custom-black opacity-60 z-10"></div>
 
-      <main className="relative z-20 flex flex-col items-center justify-center h-full w-full max-w-md mx-auto text-center space-y-8">
+      <main className="relative z-20 flex flex-col items-center justify-start h-full w-full max-w-md mx-auto text-center space-y-8 pt-40">
         {/* Título e Subtítulo */}
         <div className="text-custom-white">
           {/* Este div agora está vazio, mas pode ser útil para futuros elementos de texto */}
