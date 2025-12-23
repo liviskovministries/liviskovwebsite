@@ -2,15 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState } from "react"; // Removido useRef
-import { supabase } from "@/lib/supabase/client"; // Mantido caso seja usado em outro lugar
-import { toast } from "sonner"; // Mantido caso seja usado em outro lugar
+import { useState } from "react";
+import { supabase } from "@/lib/supabase/client";
+import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function LiviSkoviPage() {
   // Inicializa videoUrl com a URL fornecida pelo usuário
-  const [videoUrl, setVideoUrl] = useState<string | null>("https://fgnxnvfycbzyjgnprskc.supabase.co/storage/v1/object/sign/videos/livi.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV81ZDhjZWVkMC02MmQyLTQzMWYtYmY5Yy1lMjE3NTMxMDk0NzEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2aWRlb3MvbGl2aS5tcDQiLCJpYXQiOjE3NjY1MTkwNjcsImV4cCI6MTc5ODA1NTA2N30.V8G5Zt19JwwWrgKBcQONW3NufnCXpx5gvre1NHYbuBs");
-  // fileInputRef e handleFileUpload foram removidos
+  const [videoUrl, setVideoUrl] = useState<string | null>("https://fgnxnvfycbzyjgnprskc.supabase.co/storage/v1/object/sign/videos/livi.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV81ZDhjZWVkMC02MmQyLTQzMWYtYmY5Yy1lMjE3NTMxMDk0NzEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2aWRlb3MvbGl2aS5tcDQiLCJpYXQiOjE3NjY1MTkwNjcsImV4cCI6MTc5ODA1NTA2N30.V8G5Zt19mJwWrgKBcQONW3NufnCXpx5gvre1NHYbuBs");
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-start p-4 overflow-hidden">
@@ -61,8 +60,6 @@ export default function LiviSkoviPage() {
             </div>
           )}
         </div>
-
-        {/* Input de arquivo e botão de upload foram removidos */}
 
         {/* Botão para o Formulário */}
         <Button
