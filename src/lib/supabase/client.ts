@@ -16,8 +16,16 @@ export interface Database {
     Tables: {
       pre_sales: {
         Row: PreSales;
-        Insert: Omit<PreSales, 'id' | 'created_at'>;
-        Update: Partial<Omit<PreSales, 'id' | 'created_at'>>;
+        Insert: {
+          name: string;
+          email: string;
+          whatsapp: string;
+        };
+        Update: Partial<{
+          name: string;
+          email: string;
+          whatsapp: string;
+        }>;
       };
     };
     Views: {

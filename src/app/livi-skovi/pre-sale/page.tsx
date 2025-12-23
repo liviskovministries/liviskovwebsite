@@ -67,7 +67,7 @@ export default function PreSalePage() {
           name: data.name,
           email: data.email,
           whatsapp: data.whatsapp,
-        } as Database['public']['Tables']['pre_sales']['Insert'])
+        })
         .select();
 
       console.log("Resposta do Supabase:", { insertedData, error });
