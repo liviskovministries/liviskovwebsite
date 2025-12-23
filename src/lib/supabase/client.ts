@@ -12,7 +12,13 @@ if (!supabaseAnonKey) {
   console.error("ERRO: NEXT_PUBLIC_SUPABASE_ANON_KEY não está definida!");
 }
 
-if (!supabaseUrl || !supabaseAnonKey) {
+if (supabaseUrl && !supabaseUrl.startsWith('http')) {
+  console.error("ERRO: NEXT_PUBLIC_SUPABASE_URL não é uma URL válida!");
+}
+
+if (supabaseUrl && supabaseAnonKey) {
+  console.log("Supabase configurado corretamente");
+} else {
   console.error("ERRO: Variáveis de ambiente do Supabase não configuradas!");
 }
 
