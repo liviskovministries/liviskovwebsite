@@ -63,13 +63,11 @@ export default function PreSalePage() {
       // Tenta inserir os dados diretamente
       const { data: insertedData, error } = await supabase
         .from("pre_sales")
-        .insert([
-          {
-            name: data.name,
-            email: data.email,
-            whatsapp: data.whatsapp,
-          }
-        ])
+        .insert({
+          name: data.name,
+          email: data.email,
+          whatsapp: data.whatsapp,
+        } as Database['public']['Tables']['pre_sales']['Insert'])
         .select();
 
       console.log("Resposta do Supabase:", { insertedData, error });
