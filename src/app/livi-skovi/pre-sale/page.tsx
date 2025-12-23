@@ -37,10 +37,10 @@ export default function PreSalePage() {
 
   const onSubmit = async (data: FormValues) => {
     setIsLoading(true);
-    console.log("Tentando enviar dados:", data);
+    console.log("Iniciando envio para o Supabase:", data);
     
     try {
-      const { error } = await supabase.from("pre_sales").insert([
+      const { error: supabaseError } = await supabase.from("pre_sales").insert([
         {
           name: data.name,
           email: data.email,
@@ -48,21 +48,22 @@ export default function PreSalePage() {
         },
       ]);
 
-      if (error) {
-        console.error("Erro do Supabase:", error);
-        throw error;
+      if (supabaseError) {
+        console.error("Erro detalhado do Supabase:", {
+          message: supabaseError.message,
+          details: supabaseError.details,
+          hint: supabaseError.hint,
+          code: supabaseError.code
+        });
+        throw new Error(supabaseError.message || "Erro desconhecido no banco de dados");
       }
 
-      console.log("Sucesso!");
+      console.log("Inserção concluída com sucesso!");
       toast.success("Dados salvos com sucesso!");
       setStep("payment");
     } catch (error: any) {
-      console.error("Erro na submissão:", error);
-      toast.error(
-        error.message === "fetch failed" 
-          ? "Erro de conexão: Verifique se a URL do Supabase está correta." 
-          : "Erro ao salvar dados: " + (error.message || "Erro desconhecido")
-      );
+      console.error("Erro capturado no onSubmit:", error);
+      toast.error(error.message || "Erro ao conectar com o servidor.");
     } finally {
       setIsLoading(false);
     }
