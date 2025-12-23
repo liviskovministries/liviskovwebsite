@@ -14,20 +14,42 @@ export default function LiviSkoviPage() {
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (isMounted && videoRef.current) {
+  const attemptPlay = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
       videoRef.current.volume = 1.0;
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
-          console.log("Autoplay blocked by browser policy.", error);
+          console.log("Autoplay blocked. Waiting for interaction.", error);
         });
       }
+    }
+  };
+
+  useEffect(() => {
+    if (isMounted) {
+      attemptPlay();
+      
+      // Fallback: se o autoplay falhar, tenta tocar no primeiro clique na página
+      const handleFirstInteraction = () => {
+        attemptPlay();
+        window.removeEventListener('click', handleFirstInteraction);
+        window.removeEventListener('touchstart', handleFirstInteraction);
+      };
+
+      window.addEventListener('click', handleFirstInteraction);
+      window.addEventListener('touchstart', handleFirstInteraction);
+
+      return () => {
+        window.removeEventListener('click', handleFirstInteraction);
+        window.removeEventListener('touchstart', handleFirstInteraction);
+      };
     }
   }, [isMounted, videoUrl]);
 
   if (!isMounted) {
-    return <div className="min-h-screen bg-black" />; // Skeleton ou tela vazia durante o carregamento inicial
+    return <div className="min-h-screen bg-black" />;
   }
 
   return (
@@ -41,7 +63,8 @@ export default function LiviSkoviPage() {
       />
       <div className="absolute inset-0 bg-custom-black opacity-60 z-10" />
 
-      <main className="relative z-20 flex flex-col items-center justify-start h-full w-full max-w-md md:max-w-5xl mx-auto text-center space-y-6 md:space-y-12 pt-10">
+      {/* md:space-y-16 aumenta o espaço entre logo e vídeo no desktop */}
+      <main className="relative z-20 flex flex-col items-center justify-start h-full w-full max-w-md md:max-w-5xl mx-auto text-center space-y-6 md:space-y-16 pt-10">
         <div className="w-full flex justify-center">
           <Image
             src="/livi-skovi-logo.png"
