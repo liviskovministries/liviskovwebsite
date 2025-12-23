@@ -10,9 +10,10 @@ import { supabase } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Copy, AlertTriangle, RefreshCw } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Copy, AlertTriangle, RefreshCw, Database } from "lucide-react";
+import { SetupTableButton } from "@/components/setup-table-button";
 
 const formSchema = z.object({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
@@ -197,6 +198,13 @@ export default function PreSalePage() {
                   </Button>
                 </form>
               </CardContent>
+              <CardFooter className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <Database className="h-4 w-4" />
+                  <span>Configuração do banco de dados</span>
+                </div>
+                <SetupTableButton />
+              </CardFooter>
             </>
           ) : (
             <>
