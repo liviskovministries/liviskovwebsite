@@ -26,14 +26,17 @@ export default function LiviSkoviPage() {
       {/* Overlay para escurecer a imagem e melhorar a legibilidade */}
       <div className="absolute inset-0 bg-custom-black opacity-60 z-10"></div>
 
-      <main className="relative z-20 flex flex-col items-center justify-start h-full w-full max-w-md mx-auto text-center space-y-4 pt-10">
-        {/* Logo */}
-        <Image
-          src="/livi-skovi-logo.png"
-          alt="Livi Skovi Logo"
-          width={800}
-          height={400}
-        />
+      <main className="relative z-20 flex flex-col items-center justify-start h-full w-full max-w-md md:max-w-5xl mx-auto text-center space-y-4 pt-10">
+        {/* Logo - Aumentada em 3x para desktop (md) */}
+        <div className="w-full flex justify-center">
+          <Image
+            src="/livi-skovi-logo.png"
+            alt="Livi Skovi Logo"
+            width={2400}
+            height={1200}
+            className="w-full md:w-[1200px] h-auto object-contain"
+          />
+        </div>
 
         {/* Título e Subtítulo */}
         <div className="text-custom-white">
