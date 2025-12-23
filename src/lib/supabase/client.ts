@@ -1,5 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -18,7 +17,7 @@ if (supabaseUrl && !supabaseUrl.startsWith('http')) {
 }
 
 // Cria o cliente apenas se as variáveis estiverem definidas
-let supabase = null;
+let supabase: SupabaseClient | null = null; // Explicitamente tipado aqui
 if (supabaseUrl && supabaseAnonKey) {
   try {
     supabase = createClient(supabaseUrl, supabaseAnonKey);

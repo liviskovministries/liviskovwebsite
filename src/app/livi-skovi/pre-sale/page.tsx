@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { toast } from "sonner";
 import { ArrowLeft, CheckCircle2, Copy, AlertTriangle, RefreshCw, Database as DatabaseIcon } from "lucide-react";
 import { SetupTableButton } from "@/components/setup-table-button";
+import { SupabaseClient } from "@supabase/supabase-js"; // Importando SupabaseClient
 
 const formSchema = z.object({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
@@ -61,7 +62,7 @@ export default function PreSalePage() {
       console.log("Cliente Supabase:", supabase);
       
       // Tenta inserir os dados diretamente
-      const { data: insertedData, error } = await supabase
+      const { data: insertedData, error } = await (supabase as SupabaseClient) // Cast para SupabaseClient
         .from("pre_sales")
         .insert([
           {
