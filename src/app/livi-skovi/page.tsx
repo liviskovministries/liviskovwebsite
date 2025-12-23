@@ -14,10 +14,18 @@ export default function LiviSkoviPage() {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.volume = 1.0; // Define o volume no máximo
-      videoRef.current.play().catch((error) => {
-        console.log("Autoplay com som foi bloqueado pelo navegador. O usuário precisa interagir com a página primeiro.", error);
-      });
+      // Forçamos o volume no máximo
+      videoRef.current.volume = 1.0;
+      
+      // Tentativa de autoplay com som. 
+      // Nota: Navegadores podem bloquear se não houver interação prévia.
+      const playPromise = videoRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("O autoplay com som foi bloqueado. O navegador exige interação do usuário.", error);
+        });
+      }
     }
   }, [videoUrl]);
 
@@ -36,7 +44,9 @@ export default function LiviSkoviPage() {
       {/* Overlay para escurecer a imagem e melhorar a legibilidade */}
       <div className="absolute inset-0 bg-custom-black opacity-60 z-10"></div>
 
-      <main className="relative z-20 flex flex-col items-center justify-start h-full w-full max-w-md md:max-w-5xl mx-auto text-center space-y-4 pt-10">
+      {/* Ajustado o space-y para md:space-y-12 para dar mais espaço no desktop */}
+      <main className="relative z-20 flex flex-col items-center justify-start h-full w-full max-w-md md:max-w-5xl mx-auto text-center space-y-6 md:space-y-12 pt-10">
+        
         {/* Logo - Aumentada em 3x para desktop (md) */}
         <div className="w-full flex justify-center">
           <Image
@@ -72,12 +82,12 @@ export default function LiviSkoviPage() {
         {/* Botão para o Formulário */}
         <Button
           className="bg-custom-green hover:bg-custom-green/90 text-custom-white font-clear-sans text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 ease-in-out"
-          onClick={() => alert("Redirecionar para o formulário!")} // Substitua por sua lógica de redirecionamento
+          onClick={() => alert("Redirecionar para o formulário!")} 
         >
           Acessar Formulário
         </Button>
       </main>
-      <Toaster /> {/* Adicione o Toaster aqui para exibir as notificações */}
+      <Toaster />
     </div>
   );
 }
