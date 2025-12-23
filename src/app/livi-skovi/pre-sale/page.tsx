@@ -37,6 +37,8 @@ export default function PreSalePage() {
 
   const onSubmit = async (data: FormValues) => {
     setIsLoading(true);
+    console.log("Tentando enviar dados:", data);
+    
     try {
       const { error } = await supabase.from("pre_sales").insert([
         {
@@ -46,12 +48,21 @@ export default function PreSalePage() {
         },
       ]);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Erro do Supabase:", error);
+        throw error;
+      }
 
+      console.log("Sucesso!");
       toast.success("Dados salvos com sucesso!");
       setStep("payment");
     } catch (error: any) {
-      toast.error("Erro ao salvar dados: " + error.message);
+      console.error("Erro na submissão:", error);
+      toast.error(
+        error.message === "fetch failed" 
+          ? "Erro de conexão: Verifique se a URL do Supabase está correta." 
+          : "Erro ao salvar dados: " + (error.message || "Erro desconhecido")
+      );
     } finally {
       setIsLoading(false);
     }
