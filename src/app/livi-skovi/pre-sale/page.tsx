@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Copy } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Copy, AlertTriangle } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
@@ -25,7 +25,16 @@ type FormValues = z.infer<typeof formSchema>;
 export default function PreSalePage() {
   const [step, setStep] = useState<"form" | "payment">("form");
   const [isLoading, setIsLoading] = useState(false);
+  const [isConfigured, setIsConfigured] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key || url === "" || key === "") {
+      setIsConfigured(false);
+    }
+  }, []);
 
   const {
     register,
@@ -36,9 +45,12 @@ export default function PreSalePage() {
   });
 
   const onSubmit = async (data: FormValues) => {
+    if (!isConfigured) {
+      toast.error("Supabase não configurado. Adicione as chaves de API.");
+      return;
+    }
+
     setIsLoading(true);
-    console.log("Iniciando envio para o Supabase:", data);
-    
     try {
       const { error: supabaseError } = await supabase.from("pre_sales").insert([
         {
@@ -48,22 +60,13 @@ export default function PreSalePage() {
         },
       ]);
 
-      if (supabaseError) {
-        console.error("Erro detalhado do Supabase:", {
-          message: supabaseError.message,
-          details: supabaseError.details,
-          hint: supabaseError.hint,
-          code: supabaseError.code
-        });
-        throw new Error(supabaseError.message || "Erro desconhecido no banco de dados");
-      }
+      if (supabaseError) throw supabaseError;
 
-      console.log("Inserção concluída com sucesso!");
       toast.success("Dados salvos com sucesso!");
       setStep("payment");
     } catch (error: any) {
-      console.error("Erro capturado no onSubmit:", error);
-      toast.error(error.message || "Erro ao conectar com o servidor.");
+      console.error("Erro na submissão:", error);
+      toast.error("Erro de conexão com o banco de dados. Verifique suas chaves do Supabase.");
     } finally {
       setIsLoading(false);
     }
@@ -96,6 +99,16 @@ export default function PreSalePage() {
           Voltar
         </Button>
 
+        {!isConfigured && (
+          <div className="bg-amber-100 border-l-4 border-amber-500 p-4 mb-4 rounded shadow-md flex items-start gap-3">
+            <AlertTriangle className="text-amber-600 shrink-0 mt-1" size={20} />
+            <div>
+              <p className="text-amber-800 font-bold text-sm">Atenção!</p>
+              <p className="text-amber-700 text-xs">Variáveis do Supabase não detectadas. O formulário não irá funcionar até que você as configure.</p>
+            </div>
+          </div>
+        )}
+
         <Card className="bg-white/95 backdrop-blur shadow-2xl border-none">
           {step === "form" ? (
             <>
@@ -126,7 +139,7 @@ export default function PreSalePage() {
                   <Button
                     type="submit"
                     className="w-full bg-custom-green hover:bg-custom-green/90 text-white py-6 text-lg rounded-xl mt-4"
-                    disabled={isLoading}
+                    disabled={isLoading || !isConfigured}
                   >
                     {isLoading ? "Processando..." : "Ir para Pagamento"}
                   </Button>
