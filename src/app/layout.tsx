@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google"; // Importando as novas fontes
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +11,20 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Configuração da fonte principal (Tan Garland)
+const tanGarland = Playfair_Display({
+  variable: "--font-tan-garland",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+// Configuração da fonte secundária (Clear Sans)
+const clearSans = Inter({
+  variable: "--font-clear-sans",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${tanGarland.variable} ${clearSans.variable} antialiased`}
       >
         {children}
       </body>
