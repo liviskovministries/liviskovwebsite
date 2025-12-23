@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { supabase, type Database } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -63,11 +63,13 @@ export default function PreSalePage() {
       // Tenta inserir os dados diretamente
       const { data: insertedData, error } = await supabase
         .from("pre_sales")
-        .insert({
-          name: data.name,
-          email: data.email,
-          whatsapp: data.whatsapp,
-        })
+        .insert([
+          {
+            name: data.name,
+            email: data.email,
+            whatsapp: data.whatsapp,
+          }
+        ])
         .select();
 
       console.log("Resposta do Supabase:", { insertedData, error });
