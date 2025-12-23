@@ -2,50 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState, useRef } from "react";
-import { supabase } from "@/lib/supabase/client";
-import { toast } from "sonner";
-import { Upload } from "lucide-react";
+import { useState } from "react"; // Removido useRef
+import { supabase } from "@/lib/supabase/client"; // Mantido caso seja usado em outro lugar
+import { toast } from "sonner"; // Mantido caso seja usado em outro lugar
 import { Toaster } from "@/components/ui/sonner";
 
 export default function LiviSkoviPage() {
   // Inicializa videoUrl com a URL fornecida pelo usuário
-  const [videoUrl, setVideoUrl] = useState<string | null>("https://fgnxnvfycbzyjgnprskc.supabase.co/storage/v1/object/sign/videos/livi.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV81ZDhjZWVkMC02MmQyLTQzMWYtYmY5Yy1lMjE3NTMxMDk0NzEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2aWRlb3MvbGl2aS5tcDQiLCJpYXQiOjE3NjY1MTkwNjcsImV4cCI6MTc5ODA1NTA2N30.V8G5Zt19mJwWrgKBcQONW3NufnCXpx5gvre1NHYbuBs");
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      toast.error("Nenhum arquivo selecionado.");
-      return;
-    }
-
-    const toastId = toast.loading("Fazendo upload do vídeo...");
-
-    try {
-      const { data, error } = await supabase.storage
-        .from("videos") // Use o nome do seu bucket aqui
-        .upload(`public/${file.name}`, file, {
-          cacheControl: "3600",
-          upsert: false,
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      // Obter a URL pública do vídeo
-      const { data: publicUrlData } = supabase.storage
-        .from("videos")
-        .getPublicUrl(data.path);
-
-      setVideoUrl(publicUrlData.publicUrl);
-      toast.success("Vídeo enviado com sucesso!", { id: toastId });
-    } catch (error: any) {
-      console.error("Erro ao fazer upload do vídeo:", error.message);
-      toast.error(`Erro ao fazer upload: ${error.message}`, { id: toastId });
-    }
-  };
+  const [videoUrl, setVideoUrl] = useState<string | null>("https://fgnxnvfycbzyjgnprskc.supabase.co/storage/v1/object/sign/videos/livi.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV81ZDhjZWVkMC02MmQyLTQzMWYtYmY5Yy1lMjE3NTMxMDk0NzEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2aWRlb3MvbGl2aS5tcDQiLCJpYXQiOjE3NjY1MTkwNjcsImV4cCI6MTc5ODA1NTA2N30.V8G5Zt19JwwWrgKBcQONW3NufnCXpx5gvre1NHYbuBs");
+  // fileInputRef e handleFileUpload foram removidos
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-start p-4 overflow-hidden">
@@ -97,21 +62,7 @@ export default function LiviSkoviPage() {
           )}
         </div>
 
-        {/* Input de arquivo e botão de upload */}
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileUpload}
-          accept="video/*"
-          className="hidden"
-        />
-        <Button
-          className="bg-blue-600 hover:bg-blue-700 text-custom-white font-clear-sans text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 ease-in-out flex items-center space-x-2"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <Upload className="h-5 w-5" />
-          <span>Upload de Vídeo</span>
-        </Button>
+        {/* Input de arquivo e botão de upload foram removidos */}
 
         {/* Botão para o Formulário */}
         <Button
