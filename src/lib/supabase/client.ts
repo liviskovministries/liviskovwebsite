@@ -1,4 +1,38 @@
 import { createClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
+
+// Definindo o tipo para as tabelas do Supabase
+type PreSales = {
+  id: number;
+  name: string;
+  email: string;
+  whatsapp: string;
+  created_at: string;
+};
+
+// Definindo o tipo para o esquema do banco de dados
+interface Database {
+  public: {
+    Tables: {
+      pre_sales: {
+        Row: PreSales;
+        Insert: Partial<PreSales>;
+        Update: Partial<PreSales>;
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+  };
+}
+
+type TypedSupabaseClient = SupabaseClient<Database>;
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -17,10 +51,10 @@ if (supabaseUrl && !supabaseUrl.startsWith('http')) {
 }
 
 // Cria o cliente apenas se as variáveis estiverem definidas
-let supabase = null;
+let supabase: TypedSupabaseClient | null = null;
 if (supabaseUrl && supabaseAnonKey) {
   try {
-    supabase = createClient(supabaseUrl, supabaseAnonKey);
+    supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
     console.log("Supabase cliente criado com sucesso");
   } catch (error) {
     console.error("Erro ao criar cliente do Supabase:", error);
@@ -30,3 +64,4 @@ if (supabaseUrl && supabaseAnonKey) {
 }
 
 export { supabase };
+export type { TypedSupabaseClient, Database };
