@@ -56,20 +56,8 @@ export default function PreSalePage() {
     try {
       console.log("Tentando inserir dados:", data);
       
-      // Verifica se a tabela existe (opcional)
-      const { data: tableData, error: tableError } = await supabase
-        .from('pre_sales')
-        .select('*', { count: 'exact', head: true });
-      
-      if (tableError && tableError.code !== '42P01') { // 42P01 = tabela não existe
-        console.error("Erro ao verificar tabela:", tableError);
-        toast.error("Erro ao verificar tabela no banco de dados.");
-        setIsLoading(false);
-        return;
-      }
-      
-      // Tenta inserir os dados
-      const { data: insertedData, error: supabaseError } = await supabase
+      // Tenta inserir os dados diretamente
+      const { data: insertedData, error } = await supabase
         .from("pre_sales")
         .insert([
           {
@@ -80,19 +68,18 @@ export default function PreSalePage() {
         ])
         .select();
 
-      if (supabaseError) {
-        console.error("Erro detalhado do Supabase:", supabaseError);
-        console.error("Código do erro:", supabaseError.code);
-        console.error("Mensagem do erro:", supabaseError.message);
-        console.error("Detalhes do erro:", supabaseError.details);
+      if (error) {
+        console.error("Erro detalhado do Supabase:", error);
+        console.error("Tipo do erro:", typeof error);
+        console.error("JSON do erro:", JSON.stringify(error, null, 2));
         
         // Tratamento específico para erros comuns
-        if (supabaseError.code === '42P01') {
-          toast.error("Tabela 'pre_sales' não encontrada. Verifique se a tabela foi criada no Supabase.");
-        } else if (supabaseError.code === '23505') {
+        if (error.code === '23505') {
           toast.error("Este e-mail ou telefone já está cadastrado.");
+        } else if (error.message) {
+          toast.error(`Erro ao salvar dados: ${error.message}`);
         } else {
-          toast.error(`Erro ao salvar dados: ${supabaseError.message}`);
+          toast.error("Erro desconhecido ao salvar dados.");
         }
         return;
       }
@@ -103,6 +90,7 @@ export default function PreSalePage() {
     } catch (error: any) {
       console.error("Erro na submissão:", error);
       console.error("Tipo do erro capturado:", typeof error);
+      console.error("JSON do erro capturado:", JSON.stringify(error, null, 2));
       
       if (error.message) {
         toast.error(`Erro: ${error.message}`);
