@@ -12,15 +12,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Copy } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Copy, Globe } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
   email: z.string().email("E-mail inválido"),
+  country: z.string().min(1, "Selecione um país"),
   whatsapp: z.string().min(10, "Telefone inválido"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
+
+const countries = [
+  { name: "Brasil", code: "BR" },
+  { name: "Portugal", code: "PT" },
+  { name: "Estados Unidos", code: "US" },
+  { name: "Angola", code: "AO" },
+  { name: "Moçambique", code: "MZ" },
+  { name: "Outro", code: "Other" },
+];
 
 export default function PreSalePage() {
   const [step, setStep] = useState<"form" | "payment">("form");
@@ -33,6 +43,9 @@ export default function PreSalePage() {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      country: "Brasil"
+    }
   });
 
   const onSubmit = async (data: FormValues) => {
@@ -42,6 +55,7 @@ export default function PreSalePage() {
         {
           name: data.name,
           email: data.email,
+          country: data.country,
           whatsapp: data.whatsapp,
         },
       ]);
@@ -58,7 +72,6 @@ export default function PreSalePage() {
   };
 
   const copyPixKey = () => {
-    // Substitua pela sua chave PIX real
     const pixKey = "seu-email@ou-chave-pix.com";
     navigator.clipboard.writeText(pixKey);
     toast.success("Chave PIX copiada!");
@@ -104,6 +117,25 @@ export default function PreSalePage() {
                     <Label htmlFor="email">E-mail</Label>
                     <Input id="email" type="email" placeholder="seu@email.com" {...register("email")} />
                     {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="country">País</Label>
+                    <div className="relative">
+                      <select
+                        id="country"
+                        {...register("country")}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none"
+                      >
+                        {countries.map((c) => (
+                          <option key={c.code} value={c.name}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+                      <Globe className="absolute right-3 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
+                    </div>
+                    {errors.country && <p className="text-xs text-red-500">{errors.country.message}</p>}
                   </div>
 
                   <div className="space-y-2">
