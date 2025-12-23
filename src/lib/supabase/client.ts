@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 // Definindo o tipo para as tabelas do Supabase
-type PreSales = {
+export type PreSales = {
   id: number;
   name: string;
   email: string;
@@ -11,13 +11,13 @@ type PreSales = {
 };
 
 // Definindo o tipo para o esquema do banco de dados
-interface Database {
+export interface Database {
   public: {
     Tables: {
       pre_sales: {
         Row: PreSales;
-        Insert: PreSales;
-        Update: Partial<PreSales>;
+        Insert: Omit<PreSales, 'id' | 'created_at'>;
+        Update: Partial<Omit<PreSales, 'id' | 'created_at'>>;
       };
     };
     Views: {
@@ -32,7 +32,7 @@ interface Database {
   };
 }
 
-type TypedSupabaseClient = SupabaseClient<Database>;
+export type TypedSupabaseClient = SupabaseClient<Database>;
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -64,4 +64,3 @@ if (supabaseUrl && supabaseAnonKey) {
 }
 
 export { supabase };
-export type { TypedSupabaseClient, Database };
