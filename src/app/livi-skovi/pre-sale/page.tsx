@@ -60,13 +60,17 @@ export default function PreSalePage() {
         },
       ]);
 
-      if (supabaseError) throw supabaseError;
+      if (supabaseError) {
+        console.error("Erro detalhado do Supabase:", supabaseError);
+        throw new Error(supabaseError.message || "Erro desconhecido no banco de dados");
+      }
 
       toast.success("Dados salvos com sucesso!");
       setStep("payment");
     } catch (error: any) {
       console.error("Erro na submissão:", error);
-      toast.error("Erro de conexão com o banco de dados. Verifique suas chaves do Supabase.");
+      const errorMessage = error.message || "Erro de conexão com o banco de dados.";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
