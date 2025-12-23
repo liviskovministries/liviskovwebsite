@@ -29,11 +29,16 @@ export default function PreSalePage() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("Verificando configuração do Supabase...");
+    console.log("Supabase cliente:", supabase);
+    
     // Verifica se o cliente do Supabase foi criado corretamente
     if (!supabase) {
       setIsConfigured(false);
       console.error("Cliente do Supabase não foi criado. Verifique as variáveis de ambiente.");
       toast.error("Erro de configuração do Supabase. Verifique as variáveis de ambiente.");
+    } else {
+      console.log("Cliente do Supabase configurado corretamente");
     }
   }, []);
 
@@ -46,7 +51,10 @@ export default function PreSalePage() {
   });
 
   const onSubmit = async (data: FormValues) => {
+    console.log("Iniciando submissão do formulário...");
+    
     if (!isConfigured || !supabase) {
+      console.error("Supabase não configurado");
       toast.error("Supabase não configurado. Adicione as chaves de API.");
       return;
     }
@@ -55,6 +63,9 @@ export default function PreSalePage() {
     
     try {
       console.log("Tentando inserir dados:", data);
+      
+      // Verifica se o cliente está funcionando
+      console.log("Cliente Supabase:", supabase);
       
       // Tenta inserir os dados diretamente
       const { data: insertedData, error } = await supabase
@@ -68,6 +79,8 @@ export default function PreSalePage() {
         ])
         .select();
 
+      console.log("Resposta do Supabase:", { insertedData, error });
+      
       if (error) {
         console.error("Erro detalhado do Supabase:", error);
         console.error("Tipo do erro:", typeof error);
