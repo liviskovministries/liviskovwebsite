@@ -2,14 +2,24 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function LiviSkoviPage() {
+  const videoRef = useRef<HTMLVideoElement>(null);
   // Inicializa videoUrl com a URL fornecida pelo usuário
   const [videoUrl, setVideoUrl] = useState<string | null>("https://fgnxnvfycbzyjgnprskc.supabase.co/storage/v1/object/sign/videos/livi.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV81ZDhjZWVkMC02MmQyLTQzMWYtYmY5Yy1lMjE3NTMxMDk0NzEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2aWRlb3MvbGl2aS5tcDQiLCJpYXQiOjE3NjY1MTkwNjcsImV4cCI6MTc5ODA1NTA2N30.V8G5Zt19mJwWrgKBcQONW3NufnCXpx5gvre1NHYbuBs");
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.volume = 1.0; // Define o volume no máximo
+      videoRef.current.play().catch((error) => {
+        console.log("Autoplay com som foi bloqueado pelo navegador. O usuário precisa interagir com a página primeiro.", error);
+      });
+    }
+  }, [videoUrl]);
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-start p-4 overflow-hidden">
@@ -38,15 +48,11 @@ export default function LiviSkoviPage() {
           />
         </div>
 
-        {/* Título e Subtítulo */}
-        <div className="text-custom-white">
-          {/* Este div agora está vazio, mas pode ser útil para futuros elementos de texto */}
-        </div>
-
         {/* Video Element */}
         <div className="w-full max-w-xs sm:max-w-sm md:max-w-md aspect-[9/16] bg-gray-800 rounded-lg shadow-lg overflow-hidden flex items-center justify-center">
           {videoUrl ? (
             <video
+              ref={videoRef}
               src={videoUrl}
               controls
               loop
