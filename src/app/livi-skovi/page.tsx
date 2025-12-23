@@ -24,8 +24,8 @@ export default function LiviSkoviPage() {
         <Image
           src="/livi-skovi-logo.png"
           alt="Livi Skovi Logo"
-          width={200} // Ajuste a largura conforme necessário
-          height={100} // Ajuste a altura conforme necessário
+          width={800} // Largura ajustada (200 * 4)
+          height={400} // Altura ajustada (100 * 4)
           className="mb-8" // Margem inferior para separar do conteúdo abaixo
         />
 
