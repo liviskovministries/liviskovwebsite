@@ -55,30 +55,33 @@ export default function PreSalePage() {
 
     setIsLoading(true);
     try {
+      console.log("Tentando inserir dados:", data);
+      
       // Tenta inserir os dados
-      const { error: supabaseError } = await supabase.from("pre_sales").insert([
+      const { data: insertedData, error: supabaseError } = await supabase.from("pre_sales").insert([
         {
           name: data.name,
           email: data.email,
           whatsapp: data.whatsapp,
         },
-      ]);
+      ]).select();
 
       if (supabaseError) {
-        console.error("Erro retornado pelo Supabase:", supabaseError);
-        throw new Error(supabaseError.message);
+        console.error("Erro detalhado do Supabase:", supabaseError);
+        console.error("Tipo do erro:", typeof supabaseError);
+        console.error("JSON do erro:", JSON.stringify(supabaseError, null, 2));
+        throw new Error(supabaseError.message || "Erro desconhecido no Supabase");
       }
 
+      console.log("Dados inseridos com sucesso:", insertedData);
       toast.success("Dados salvos com sucesso!");
       setStep("payment");
     } catch (error: any) {
       console.error("Erro na submissão:", error);
+      console.error("Tipo do erro capturado:", typeof error);
+      console.error("JSON do erro capturado:", JSON.stringify(error, null, 2));
       
-      if (error.message?.includes("Could not find the table")) {
-        toast.error("Erro: A tabela 'pre_sales' não foi encontrada no banco.");
-      } else {
-        toast.error(error.message || "Erro ao conectar com o banco de dados.");
-      }
+      toast.error(error.message || "Erro ao conectar com o banco de dados.");
     } finally {
       setIsLoading(false);
     }
