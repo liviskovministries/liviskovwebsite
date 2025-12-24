@@ -182,10 +182,6 @@ export default function PreSalePage() {
                   />
                 </div>
                 
-                <div className="bg-blue-50 p-4 rounded-lg text-xs text-blue-800 leading-relaxed text-center">
-                  Após o pagamento, envie o comprovante para nosso WhatsApp para liberação imediata.
-                </div>
-                
                 <Button 
                   className="w-full bg-custom-green hover:bg-custom-green/90 text-white rounded-xl py-6"
                   onClick={() => router.push("/livi-skovi")}
