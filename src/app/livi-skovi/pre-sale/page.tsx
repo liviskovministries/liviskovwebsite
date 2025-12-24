@@ -12,8 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Copy, RefreshCw } from "lucide-react";
-import { SupabaseClient } from "@supabase/supabase-js"; // Importando SupabaseClient
+import { ArrowLeft, CheckCircle2, RefreshCw } from "lucide-react";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 const formSchema = z.object({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
@@ -47,7 +47,6 @@ export default function PreSalePage() {
 
     setIsLoading(true);
     try {
-      // Removed .select() to avoid potential RLS issues for unauthenticated users
       const { error } = await (supabase as SupabaseClient)
         .from("pre_sales")
         .insert([
@@ -70,7 +69,7 @@ export default function PreSalePage() {
       }
       
       toast.success("Dados salvos com sucesso!");
-      setStep("payment"); // Transition to the payment step on successful submission
+      setStep("payment");
     } catch (error: any) {
       if (error.message) {
         toast.error(`Erro: ${error.message}`);
@@ -80,12 +79,6 @@ export default function PreSalePage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const copyPixKey = () => {
-    const pixKey = "seu-email@ou-chave-pix.com";
-    navigator.clipboard.writeText(pixKey);
-    toast.success("Chave PIX copiada!");
   };
 
   return (
@@ -99,16 +92,26 @@ export default function PreSalePage() {
       />
       <div className="absolute inset-0 bg-black/70 z-10" />
       
-      <div className="relative z-20 w-full max-w-md">
+      <div className="relative z-20 w-full max-w-md flex flex-col items-center">
         <Button 
           variant="ghost" 
-          className="text-white mb-4 hover:bg-white/10"
+          className="text-white mb-4 hover:bg-white/10 self-start"
           onClick={() => step === "payment" ? setStep("form") : router.back()}
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
         </Button>
+
+        <div className="w-full flex justify-center mb-6">
+          <Image
+            src="/livi-skovi-logo.png"
+            alt="Livi Skovi Logo"
+            width={1200}
+            height={600}
+            className="w-48 h-auto object-contain"
+          />
+        </div>
         
-        <Card className="bg-white/95 backdrop-blur shadow-2xl border-none">
+        <Card className="bg-white/95 backdrop-blur shadow-2xl border-none w-full">
           {step === "form" ? (
             <>
               <CardHeader className="text-center">
