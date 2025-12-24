@@ -105,9 +105,9 @@ export default function PreSalePage() {
           <Image
             src="/livi-skovi-logo.png"
             alt="Livi Skovi Logo"
-            width={1200}
-            height={600}
-            className="w-48 h-auto object-contain"
+            width={2400} {/* Dobrado de 1200 */}
+            height={1200} {/* Dobrado de 600 */}
+            className="w-96 h-auto object-contain" {/* w-96 é o dobro de w-48 */}
           />
         </div>
         
