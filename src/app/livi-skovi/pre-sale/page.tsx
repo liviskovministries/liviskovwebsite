@@ -10,10 +10,9 @@ import { supabase } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, Copy, AlertTriangle, RefreshCw, Database as DatabaseIcon } from "lucide-react";
-import { SetupTableButton } from "@/components/setup-table-button";
+import { ArrowLeft, CheckCircle2, Copy, RefreshCw } from "lucide-react";
 import { SupabaseClient } from "@supabase/supabase-js"; // Importando SupabaseClient
 
 const formSchema = z.object({
@@ -27,20 +26,12 @@ type FormValues = z.infer<typeof formSchema>;
 export default function PreSalePage() {
   const [step, setStep] = useState<"form" | "payment">("form");
   const [isLoading, setIsLoading] = useState(false);
-  const [isConfigured, setIsConfigured] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    console.log("Verificando configuração do Supabase...");
-    console.log("Supabase cliente:", supabase);
-    
-    // Verifica se o cliente do Supabase foi criado corretamente
     if (!supabase) {
-      setIsConfigured(false);
       console.error("Cliente do Supabase não foi criado. Verifique as variáveis de ambiente.");
       toast.error("Erro de configuração do Supabase. Verifique as variáveis de ambiente.");
-    } else {
-      console.log("Cliente do Supabase configurado corretamente");
     }
   }, []);
 
@@ -49,20 +40,14 @@ export default function PreSalePage() {
   });
 
   const onSubmit = async (data: FormValues) => {
-    console.log("Iniciando submissão do formulário...");
-    if (!isConfigured || !supabase) {
-      console.error("Supabase não configurado");
+    if (!supabase) {
       toast.error("Supabase não configurado. Adicione as chaves de API.");
       return;
     }
 
     setIsLoading(true);
     try {
-      console.log("Tentando inserir dados:", data);
-      console.log("Cliente Supabase:", supabase);
-      
-      // Tenta inserir os dados diretamente
-      const { data: insertedData, error } = await (supabase as SupabaseClient) // Cast para SupabaseClient
+      const { data: insertedData, error } = await (supabase as SupabaseClient)
         .from("pre_sales")
         .insert([
           {
@@ -72,15 +57,8 @@ export default function PreSalePage() {
           }
         ])
         .select();
-
-      console.log("Resposta do Supabase:", { insertedData, error });
       
       if (error) {
-        console.error("Erro detalhado do Supabase:", error);
-        console.error("Tipo do erro:", typeof error);
-        console.error("JSON do erro:", JSON.stringify(error, null, 2));
-        
-        // Tratamento específico para erros comuns
         if (error.code === '23505') {
           toast.error("Este e-mail ou telefone já está cadastrado.");
         } else if (error.message) {
@@ -91,14 +69,9 @@ export default function PreSalePage() {
         return;
       }
       
-      console.log("Dados inseridos com sucesso:", insertedData);
       toast.success("Dados salvos com sucesso!");
       setStep("payment");
     } catch (error: any) {
-      console.error("Erro na submissão:", error);
-      console.error("Tipo do erro capturado:", typeof error);
-      console.error("JSON do erro capturado:", JSON.stringify(error, null, 2));
-      
       if (error.message) {
         toast.error(`Erro: ${error.message}`);
       } else {
@@ -134,16 +107,6 @@ export default function PreSalePage() {
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
         </Button>
-        
-        {!isConfigured && (
-          <div className="bg-amber-100 border-l-4 border-amber-500 p-4 mb-4 rounded shadow-md flex items-start gap-3">
-            <AlertTriangle className="text-amber-600 shrink-0 mt-1" size={20} />
-            <div>
-              <p className="text-amber-800 font-bold text-sm">Atenção!</p>
-              <p className="text-amber-700 text-xs">Variáveis do Supabase não detectadas.</p>
-            </div>
-          </div>
-        )}
         
         <Card className="bg-white/95 backdrop-blur shadow-2xl border-none">
           {step === "form" ? (
@@ -188,7 +151,7 @@ export default function PreSalePage() {
                   <Button 
                     type="submit" 
                     className="w-full bg-custom-green hover:bg-custom-green/90 text-white py-6 text-lg rounded-xl mt-4"
-                    disabled={isLoading || !isConfigured}
+                    disabled={isLoading}
                   >
                     {isLoading ? (
                       <span className="flex items-center gap-2">
@@ -199,13 +162,6 @@ export default function PreSalePage() {
                   </Button>
                 </form>
               </CardContent>
-              <CardFooter className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <DatabaseIcon className="h-4 w-4" />
-                  <span>Configuração do banco de dados</span>
-                </div>
-                <SetupTableButton />
-              </CardFooter>
             </>
           ) : (
             <>
