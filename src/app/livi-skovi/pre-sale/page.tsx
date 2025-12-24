@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; // Adicionado React aqui
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -92,7 +92,7 @@ export default function PreSalePage() {
       />
       <div className="absolute inset-0 bg-black/70 z-10" />
       
-      <div className="relative z-20 w-full max-w-3xl flex flex-col items-center"> {/* Aumentado max-w-md para max-w-3xl */}
+      <div className="relative z-20 w-full max-w-3xl flex flex-col items-center">
         <Button 
           variant="ghost" 
           className="text-white mb-4 hover:bg-white/10 self-start"
@@ -107,7 +107,7 @@ export default function PreSalePage() {
             alt="Livi Skovi Logo"
             width={1200}
             height={600}
-            className="w-144 h-auto object-contain" {/* Alterado w-48 para w-144 (48 * 3 = 144) */}
+            className="w-144 h-auto object-contain"
           />
         </div>
         
