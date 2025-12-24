@@ -1,32 +1,6 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = 'https://fgnxnvfycbzyjgnprskc.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbnhudmZ5Y2J6eWpnbnByc2tjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY1MTQxMzUsImV4cCI6MjA4MjA5MDEzNX0.bxIPCswsLMSzYNPz3oXuW5iNCoouz9Qa-6ilkidZaHQ';
 
-// Validação das variáveis de ambiente
-if (!supabaseUrl) {
-  console.error("ERRO: NEXT_PUBLIC_SUPABASE_URL não está definida!");
-}
-
-if (!supabaseAnonKey) {
-  console.error("ERRO: NEXT_PUBLIC_SUPABASE_ANON_KEY não está definida!");
-}
-
-if (supabaseUrl && !supabaseUrl.startsWith('http')) {
-  console.error("ERRO: NEXT_PUBLIC_SUPABASE_URL não é uma URL válida!", supabaseUrl);
-}
-
-// Cria o cliente apenas se as variáveis estiverem definidas
-let supabase: SupabaseClient | null = null; // Explicitamente tipado aqui
-if (supabaseUrl && supabaseAnonKey) {
-  try {
-    supabase = createClient(supabaseUrl, supabaseAnonKey);
-    console.log("Supabase cliente criado com sucesso");
-  } catch (error) {
-    console.error("Erro ao criar cliente do Supabase:", error);
-  }
-} else {
-  console.error("ERRO: Variáveis de ambiente do Supabase não configuradas!");
-}
-
-export { supabase };
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
