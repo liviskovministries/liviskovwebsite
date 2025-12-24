@@ -182,16 +182,6 @@ export default function PreSalePage() {
                   />
                 </div>
                 
-                <div className="w-full space-y-3">
-                  <p className="text-sm text-center text-gray-500">Ou use a chave PIX:</p>
-                  <div className="flex items-center gap-2 p-3 bg-gray-100 rounded-lg border">
-                    <span className="text-xs font-mono truncate flex-1">seu-email@ou-chave-pix.com</span>
-                    <Button size="icon" variant="ghost" onClick={copyPixKey} className="h-8 w-8">
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                
                 <div className="bg-blue-50 p-4 rounded-lg text-xs text-blue-800 leading-relaxed text-center">
                   Após o pagamento, envie o comprovante para nosso WhatsApp para liberação imediata.
                 </div>
