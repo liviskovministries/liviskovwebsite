@@ -47,7 +47,8 @@ export default function PreSalePage() {
 
     setIsLoading(true);
     try {
-      const { data: insertedData, error } = await (supabase as SupabaseClient)
+      // Removed .select() to avoid potential RLS issues for unauthenticated users
+      const { error } = await (supabase as SupabaseClient)
         .from("pre_sales")
         .insert([
           {
@@ -55,8 +56,7 @@ export default function PreSalePage() {
             email: data.email,
             whatsapp: data.whatsapp,
           }
-        ])
-        .select();
+        ]);
       
       if (error) {
         if (error.code === '23505') {
@@ -70,7 +70,7 @@ export default function PreSalePage() {
       }
       
       toast.success("Dados salvos com sucesso!");
-      setStep("payment");
+      setStep("payment"); // Transition to the payment step on successful submission
     } catch (error: any) {
       if (error.message) {
         toast.error(`Erro: ${error.message}`);
