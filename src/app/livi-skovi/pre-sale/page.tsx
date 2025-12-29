@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import * => z from "zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
@@ -198,9 +198,9 @@ export default function PreSalePage() {
                   />
                 </div>
 
-                <div className="w-full space-y-2">
-                  <Label htmlFor="pix-code" className="text-center w-full">Código PIX</Label>
-                  <div className="flex w-full max-w-sm items-center space-x-2">
+                <div className="max-w-sm space-y-2"> {/* Alterado para max-w-sm */}
+                  <Label htmlFor="pix-code" className="text-center">Código PIX</Label> {/* Removido w-full */}
+                  <div className="flex w-full items-center space-x-2"> {/* Removido max-w-sm */}
                     <Input 
                       id="pix-code" 
                       value={pixCode} 
