@@ -199,7 +199,7 @@ export default function PreSalePage() {
                 </div>
 
                 <div className="w-full space-y-2">
-                  <Label htmlFor="pix-code">Código PIX</Label>
+                  <Label htmlFor="pix-code" className="text-center w-full">Código PIX</Label>
                   <div className="flex w-full max-w-sm items-center space-x-2">
                     <Input 
                       id="pix-code" 
