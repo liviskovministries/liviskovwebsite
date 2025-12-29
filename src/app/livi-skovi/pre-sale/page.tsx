@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, RefreshCw } from "lucide-react";
+import { ArrowLeft, CheckCircle2, RefreshCw, Copy } from "lucide-react";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 const formSchema = z.object({
@@ -27,6 +27,9 @@ export default function PreSalePage() {
   const [step, setStep] = useState<"form" | "payment">("form");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  // Código PIX fornecido
+  const pixCode = "00020126580014BR.GOV.BCB.PIX0136b31658e9-229f-4d7f-8ef5-863ad2c3316c520400005303986540520.005802BR592563.833.293 LIVI DOMITILA 6009SAO PAULO610805409000622505211BC0GLqKCSYhZ3t6nz1ue630407BE";
 
   useEffect(() => {
     if (!supabase) {
@@ -78,6 +81,16 @@ export default function PreSalePage() {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleCopyPixCode = async () => {
+    try {
+      await navigator.clipboard.writeText(pixCode);
+      toast.success("Código PIX copiado!");
+    } catch (err) {
+      toast.error("Falha ao copiar o código PIX.");
+      console.error("Failed to copy PIX code: ", err);
     }
   };
 
@@ -183,6 +196,27 @@ export default function PreSalePage() {
                     fill 
                     className="object-contain" 
                   />
+                </div>
+
+                <div className="w-full space-y-2">
+                  <Label htmlFor="pix-code">Código PIX</Label>
+                  <div className="flex w-full max-w-sm items-center space-x-2">
+                    <Input 
+                      id="pix-code" 
+                      value={pixCode} 
+                      readOnly 
+                      className="flex-grow"
+                    />
+                    <Button 
+                      type="button" 
+                      onClick={handleCopyPixCode} 
+                      variant="outline" 
+                      size="icon"
+                      className="bg-custom-green hover:bg-custom-green/90 text-white"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
                 
                 <Button 
