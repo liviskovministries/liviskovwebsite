@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod"; // Importação corrigida
+import * as z from "zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
@@ -43,8 +43,10 @@ export default function PreSalePage() {
   });
 
   const onSubmit = async (data: FormValues) => {
+    console.log("onSubmit chamado com dados:", data); // Log para depuração
     if (!supabase) {
       toast.error("Supabase não configurado. Adicione as chaves de API.");
+      console.error("Cliente Supabase não configurado."); // Log para depuração
       return;
     }
 
@@ -61,6 +63,7 @@ export default function PreSalePage() {
         ]);
       
       if (error) {
+        console.error("Erro ao inserir no Supabase:", error); // Log para depuração
         if (error.code === '23505') {
           toast.error("Este e-mail ou telefone já está cadastrado.");
         } else if (error.message) {
@@ -72,8 +75,10 @@ export default function PreSalePage() {
       }
       
       toast.success("Dados salvos com sucesso!");
+      console.log("Dados salvos, mudando para a etapa de pagamento."); // Log para depuração
       setStep("payment");
     } catch (error: any) {
+      console.error("Erro no bloco catch:", error); // Log para depuração
       if (error.message) {
         toast.error(`Erro: ${error.message}`);
       } else {
@@ -81,6 +86,7 @@ export default function PreSalePage() {
       }
     } finally {
       setIsLoading(false);
+      console.log("setIsLoading(false) chamado."); // Log para depuração
     }
   };
 
@@ -166,7 +172,7 @@ export default function PreSalePage() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-custom-green hover:bg-custom-green/90 text-white py-6 text-lg rounded-xl mt-4"
+                    className="w-full bg-custom-green hover:bg-custom-green/90 text-white py-6 text-lg rounded-xl mt-4 relative z-30" // Adicionado relative z-30
                     disabled={isLoading}
                   >
                     {isLoading ? (
