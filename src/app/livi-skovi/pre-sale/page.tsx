@@ -88,7 +88,7 @@ export default function PreSalePage() {
       
       if (error) {
         // Log the full error object as a string
-        console.error("Erro ao inserir no Supabase (objeto completo):", JSON.stringify(error, null, 2));
+        // console.error("Erro ao inserir no Supabase (objeto completo):", JSON.stringify(error, null, 2)); // Removido
         console.error("Detalhes do erro Supabase (propriedades):", {
           code: error.code,
           message: error.message,
