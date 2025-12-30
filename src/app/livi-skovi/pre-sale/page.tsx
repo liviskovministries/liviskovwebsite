@@ -75,6 +75,8 @@ export default function PreSalePage() {
         email: data.email,
         whatsapp: data.whatsapp,
       });
+      
+      console.log("Supabase client before insert:", supabase); // Log do cliente Supabase
 
       const { error } = await (supabase as SupabaseClient)
         .from("pre_sales")
@@ -87,14 +89,9 @@ export default function PreSalePage() {
         ]);
       
       if (error) {
-        // Log the full error object as a string
-        // console.error("Erro ao inserir no Supabase (objeto completo):", JSON.stringify(error, null, 2)); // Removido
-        console.error("Detalhes do erro Supabase (propriedades):", {
-          code: error.code,
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-        });
+        // Log o objeto de erro completo e tenta serializá-lo para JSON
+        console.error("Erro Supabase completo:", error);
+        console.error("Erro Supabase JSON:", JSON.stringify(error, null, 2));
 
         if (error.code === '23505') {
           toast.error("Este e-mail ou telefone já está cadastrado.");
