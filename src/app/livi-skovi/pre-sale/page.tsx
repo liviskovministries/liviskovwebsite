@@ -18,7 +18,9 @@ import { SupabaseClient } from "@supabase/supabase-js";
 const formSchema = z.object({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
   email: z.string().email("E-mail inválido"),
-  whatsapp: z.string().min(10, "Telefone inválido"),
+  whatsapp: z.string()
+    .min(10, "Telefone inválido")
+    .transform((val) => val.replace(/\D/g, '')), // Remove caracteres não numéricos
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -35,9 +37,6 @@ export default function PreSalePage() {
     resolver: zodResolver(formSchema),
     mode: "onSubmit", // Valida apenas na submissão
   });
-
-  // O useEffect que chamava trigger() no carregamento foi removido para evitar validação inicial.
-  // A verificação do Supabase agora é feita no onSubmit.
 
   const onSubmit = async (data: FormValues) => {
     console.log("onSubmit chamado com dados:", data);
@@ -63,18 +62,24 @@ export default function PreSalePage() {
           {
             name: data.name,
             email: data.email,
-            whatsapp: data.whatsapp,
+            whatsapp: data.whatsapp, // O valor já foi transformado pelo Zod
           }
         ]);
       
       if (error) {
         console.error("Erro ao inserir no Supabase:", error); // Loga o objeto de erro completo
+        console.error("Detalhes do erro Supabase:", {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+        });
+
         if (error.code === '23505') {
           toast.error("Este e-mail ou telefone já está cadastrado.");
         } else if (error.message) {
           toast.error(`Erro ao salvar dados: ${error.message}`);
         } else {
-          // Mensagem mais informativa para erros vazios
           toast.error("Erro desconhecido ao salvar dados no Supabase. Verifique o console para mais detalhes.");
         }
         return;
