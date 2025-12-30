@@ -31,7 +31,7 @@ export default function PreSalePage() {
   // Código PIX fornecido
   const pixCode = "00020126580014BR.GOV.BCB.PIX0136b31658e9-229f-4d7f-8ef5-863ad2c3316c520400005303986540520.005802BR592563.833.293 LIVI DOMITILA 6009SAO PAULO610805409000622505211BC0GLqKCSYhZ3t6nz1ue630407BE";
 
-  const { register, handleSubmit, formState: { errors }, trigger } = useForm<FormValues>({ // Adicionado 'trigger' aqui
+  const { register, handleSubmit, formState: { errors, isValid }, trigger } = useForm<FormValues>({ // Adicionado 'isValid' aqui
     resolver: zodResolver(formSchema),
   });
 
@@ -41,14 +41,24 @@ export default function PreSalePage() {
       toast.error("Erro de configuração do Supabase. Verifique as variáveis de ambiente.");
     }
     // Adicionado para lidar com autofill: força a revalidação após um pequeno atraso
-    const timeout = setTimeout(() => {
-      trigger();
-    }, 100); 
+    const timeout = setTimeout(async () => {
+      console.log("useEffect: Chamando trigger para revalidar formulário.");
+      await trigger(); // Garante que a validação seja concluída
+      console.log("useEffect: formState.isValid após trigger:", isValid);
+    }, 300); // Aumentado o tempo de atraso para 300ms
     return () => clearTimeout(timeout);
-  }, [trigger]); // Dependência 'trigger' para garantir que seja executado quando necessário
+  }, [trigger, isValid]); // Dependências 'trigger' e 'isValid'
 
   const onSubmit = async (data: FormValues) => {
     console.log("onSubmit chamado com dados:", data);
+    console.log("onSubmit: formState.isValid no momento da submissão:", isValid); // Log para depuração
+    
+    if (!isValid) {
+      console.error("Formulário inválido na submissão.");
+      toast.error("Por favor, preencha todos os campos corretamente.");
+      return;
+    }
+
     if (!supabase) {
       toast.error("Supabase não configurado. Adicione as chaves de API.");
       console.error("Cliente Supabase não configurado.");
@@ -150,7 +160,7 @@ export default function PreSalePage() {
                       id="name" 
                       placeholder="Seu nome" 
                       {...register("name")} 
-                      autoComplete="name" // Adicionado autoComplete
+                      autoComplete="name"
                     />
                     {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
                   </div>
@@ -162,7 +172,7 @@ export default function PreSalePage() {
                       type="email" 
                       placeholder="seu@email.com" 
                       {...register("email")} 
-                      autoComplete="email" // Adicionado autoComplete
+                      autoComplete="email"
                     />
                     {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
                   </div>
@@ -173,7 +183,7 @@ export default function PreSalePage() {
                       id="whatsapp" 
                       placeholder="(00) 00000-0000" 
                       {...register("whatsapp")} 
-                      autoComplete="tel" // Adicionado autoComplete
+                      autoComplete="tel"
                     />
                     {errors.whatsapp && <p className="text-xs text-red-500">{errors.whatsapp.message}</p>}
                   </div>
