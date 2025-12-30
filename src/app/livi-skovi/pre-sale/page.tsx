@@ -31,7 +31,7 @@ export default function PreSalePage() {
   // Código PIX fornecido
   const pixCode = "00020126580014BR.GOV.BCB.PIX0136b31658e9-229f-4d7f-8ef5-863ad2c3316c520400005303986540520.005802BR592563.833.293 LIVI DOMITILA 6009SAO PAULO610805409000622505211BC0GLqKCSYhZ3t6nz1ue630407BE";
 
-  const { register, handleSubmit, formState: { errors, isValid }, trigger } = useForm<FormValues>({ // Adicionado 'isValid' aqui
+  const { register, handleSubmit, formState: { errors, isValid }, trigger } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
@@ -40,18 +40,17 @@ export default function PreSalePage() {
       console.error("Cliente do Supabase não foi criado. Verifique as variáveis de ambiente.");
       toast.error("Erro de configuração do Supabase. Verifique as variáveis de ambiente.");
     }
-    // Adicionado para lidar com autofill: força a revalidação após um pequeno atraso
     const timeout = setTimeout(async () => {
       console.log("useEffect: Chamando trigger para revalidar formulário.");
-      await trigger(); // Garante que a validação seja concluída
+      await trigger();
       console.log("useEffect: formState.isValid após trigger:", isValid);
-    }, 300); // Aumentado o tempo de atraso para 300ms
+    }, 300);
     return () => clearTimeout(timeout);
-  }, [trigger, isValid]); // Dependências 'trigger' e 'isValid'
+  }, [trigger, isValid]);
 
   const onSubmit = async (data: FormValues) => {
     console.log("onSubmit chamado com dados:", data);
-    console.log("onSubmit: formState.isValid no momento da submissão:", isValid); // Log para depuração
+    console.log("onSubmit: formState.isValid no momento da submissão:", isValid);
     
     if (!isValid) {
       console.error("Formulário inválido na submissão.");
@@ -78,13 +77,14 @@ export default function PreSalePage() {
         ]);
       
       if (error) {
-        console.error("Erro ao inserir no Supabase:", error);
+        console.error("Erro ao inserir no Supabase:", error); // Loga o objeto de erro completo
         if (error.code === '23505') {
           toast.error("Este e-mail ou telefone já está cadastrado.");
         } else if (error.message) {
           toast.error(`Erro ao salvar dados: ${error.message}`);
         } else {
-          toast.error("Erro desconhecido ao salvar dados.");
+          // Mensagem mais informativa para erros vazios
+          toast.error("Erro desconhecido ao salvar dados no Supabase. Verifique o console para mais detalhes.");
         }
         return;
       }
