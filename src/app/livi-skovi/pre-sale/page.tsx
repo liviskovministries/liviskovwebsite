@@ -69,6 +69,13 @@ export default function PreSalePage() {
 
     setIsLoading(true);
     try {
+      // Log the data being sent to Supabase
+      console.log("Dados a serem inseridos no Supabase:", {
+        name: data.name,
+        email: data.email,
+        whatsapp: data.whatsapp,
+      });
+
       const { error } = await (supabase as SupabaseClient)
         .from("pre_sales")
         .insert([
@@ -80,8 +87,9 @@ export default function PreSalePage() {
         ]);
       
       if (error) {
-        console.error("Erro ao inserir no Supabase:", error); // Loga o objeto de erro completo
-        console.error("Detalhes do erro Supabase:", {
+        // Log the full error object as a string
+        console.error("Erro ao inserir no Supabase (objeto completo):", JSON.stringify(error, null, 2));
+        console.error("Detalhes do erro Supabase (propriedades):", {
           code: error.code,
           message: error.message,
           details: error.details,
