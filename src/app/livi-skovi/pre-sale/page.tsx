@@ -31,22 +31,27 @@ export default function PreSalePage() {
   // Código PIX fornecido
   const pixCode = "00020126580014BR.GOV.BCB.PIX0136b31658e9-229f-4d7f-8ef5-863ad2c3316c520400005303986540520.005802BR592563.833.293 LIVI DOMITILA 6009SAO PAULO610805409000622505211BC0GLqKCSYhZ3t6nz1ue630407BE";
 
+  const { register, handleSubmit, formState: { errors }, trigger } = useForm<FormValues>({ // Adicionado 'trigger' aqui
+    resolver: zodResolver(formSchema),
+  });
+
   useEffect(() => {
     if (!supabase) {
       console.error("Cliente do Supabase não foi criado. Verifique as variáveis de ambiente.");
       toast.error("Erro de configuração do Supabase. Verifique as variáveis de ambiente.");
     }
-  }, []);
-
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-  });
+    // Adicionado para lidar com autofill: força a revalidação após um pequeno atraso
+    const timeout = setTimeout(() => {
+      trigger();
+    }, 100); 
+    return () => clearTimeout(timeout);
+  }, [trigger]); // Dependência 'trigger' para garantir que seja executado quando necessário
 
   const onSubmit = async (data: FormValues) => {
-    console.log("onSubmit chamado com dados:", data); // Log para depuração
+    console.log("onSubmit chamado com dados:", data);
     if (!supabase) {
       toast.error("Supabase não configurado. Adicione as chaves de API.");
-      console.error("Cliente Supabase não configurado."); // Log para depuração
+      console.error("Cliente Supabase não configurado.");
       return;
     }
 
@@ -63,7 +68,7 @@ export default function PreSalePage() {
         ]);
       
       if (error) {
-        console.error("Erro ao inserir no Supabase:", error); // Log para depuração
+        console.error("Erro ao inserir no Supabase:", error);
         if (error.code === '23505') {
           toast.error("Este e-mail ou telefone já está cadastrado.");
         } else if (error.message) {
@@ -75,10 +80,10 @@ export default function PreSalePage() {
       }
       
       toast.success("Dados salvos com sucesso!");
-      console.log("Dados salvos, mudando para a etapa de pagamento."); // Log para depuração
+      console.log("Dados salvos, mudando para a etapa de pagamento.");
       setStep("payment");
     } catch (error: any) {
-      console.error("Erro no bloco catch:", error); // Log para depuração
+      console.error("Erro no bloco catch:", error);
       if (error.message) {
         toast.error(`Erro: ${error.message}`);
       } else {
@@ -86,7 +91,7 @@ export default function PreSalePage() {
       }
     } finally {
       setIsLoading(false);
-      console.log("setIsLoading(false) chamado."); // Log para depuração
+      console.log("setIsLoading(false) chamado.");
     }
   };
 
@@ -145,6 +150,7 @@ export default function PreSalePage() {
                       id="name" 
                       placeholder="Seu nome" 
                       {...register("name")} 
+                      autoComplete="name" // Adicionado autoComplete
                     />
                     {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
                   </div>
@@ -156,6 +162,7 @@ export default function PreSalePage() {
                       type="email" 
                       placeholder="seu@email.com" 
                       {...register("email")} 
+                      autoComplete="email" // Adicionado autoComplete
                     />
                     {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
                   </div>
@@ -166,13 +173,14 @@ export default function PreSalePage() {
                       id="whatsapp" 
                       placeholder="(00) 00000-0000" 
                       {...register("whatsapp")} 
+                      autoComplete="tel" // Adicionado autoComplete
                     />
                     {errors.whatsapp && <p className="text-xs text-red-500">{errors.whatsapp.message}</p>}
                   </div>
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-custom-green hover:bg-custom-green/90 text-white py-6 text-lg rounded-xl mt-4 relative z-30" // Adicionado relative z-30
+                    className="w-full bg-custom-green hover:bg-custom-green/90 text-white py-6 text-lg rounded-xl mt-4 relative z-30"
                     disabled={isLoading}
                   >
                     {isLoading ? (
