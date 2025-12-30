@@ -19,8 +19,8 @@ const formSchema = z.object({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
   email: z.string().email("E-mail inválido"),
   whatsapp: z.string()
-    .min(10, "Telefone inválido")
-    .transform((val) => val.replace(/\D/g, '')), // Remove caracteres não numéricos
+    .transform((val) => val.replace(/\D/g, '')) // Remove caracteres não numéricos primeiro
+    .refine((val) => val.length >= 10, "Telefone inválido (mínimo 10 dígitos)"), // Valida o comprimento do valor limpo
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -37,6 +37,19 @@ export default function PreSalePage() {
     resolver: zodResolver(formSchema),
     mode: "onSubmit", // Valida apenas na submissão
   });
+
+  // Adicionando um useEffect para logar erros de validação, especialmente para o WhatsApp
+  useEffect(() => {
+    if (errors.whatsapp) {
+      console.error("Erro de validação no WhatsApp:", errors.whatsapp.message);
+    }
+    if (errors.name) {
+      console.error("Erro de validação no Nome:", errors.name.message);
+    }
+    if (errors.email) {
+      console.error("Erro de validação no Email:", errors.email.message);
+    }
+  }, [errors]);
 
   const onSubmit = async (data: FormValues) => {
     console.log("onSubmit chamado com dados:", data);
@@ -62,7 +75,7 @@ export default function PreSalePage() {
           {
             name: data.name,
             email: data.email,
-            whatsapp: data.whatsapp, // O valor já foi transformado pelo Zod
+            whatsapp: data.whatsapp, // O valor já foi transformado e validado pelo Zod
           }
         ]);
       
