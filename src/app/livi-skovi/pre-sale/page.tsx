@@ -33,20 +33,11 @@ export default function PreSalePage() {
 
   const { register, handleSubmit, formState: { errors, isValid }, trigger } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: "onSubmit", // Valida apenas na submissão
   });
 
-  useEffect(() => {
-    if (!supabase) {
-      console.error("Cliente do Supabase não foi criado. Verifique as variáveis de ambiente.");
-      toast.error("Erro de configuração do Supabase. Verifique as variáveis de ambiente.");
-    }
-    const timeout = setTimeout(async () => {
-      console.log("useEffect: Chamando trigger para revalidar formulário.");
-      await trigger();
-      console.log("useEffect: formState.isValid após trigger:", isValid);
-    }, 300);
-    return () => clearTimeout(timeout);
-  }, [trigger, isValid]);
+  // O useEffect que chamava trigger() no carregamento foi removido para evitar validação inicial.
+  // A verificação do Supabase agora é feita no onSubmit.
 
   const onSubmit = async (data: FormValues) => {
     console.log("onSubmit chamado com dados:", data);
