@@ -89,9 +89,15 @@ export default function PreSalePage() {
         ]);
       
       if (error) {
-        // Log o objeto de erro completo e tenta serializá-lo para JSON
-        console.error("Erro Supabase completo:", error);
-        console.error("Erro Supabase JSON:", JSON.stringify(error, null, 2));
+        // Log the full error object as a string
+        // console.error("Erro Supabase completo:", error); // Removido
+        // console.error("Erro Supabase JSON:", JSON.stringify(error, null, 2)); // Removido
+        console.error("Detalhes do erro Supabase (propriedades):", {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+        });
 
         if (error.code === '23505') {
           toast.error("Este e-mail ou telefone já está cadastrado.");
