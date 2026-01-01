@@ -46,7 +46,7 @@ export default function LiviSkoviPage() {
           className="bg-custom-green hover:bg-custom-green/90 text-custom-white font-clear-sans text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 ease-in-out"
           onClick={() => router.push('/livi-skovi/pre-sale')}
         >
-          Acessar Pré-Venda
+          Adquira já!
         </Button>
       </main>
       <Toaster />
