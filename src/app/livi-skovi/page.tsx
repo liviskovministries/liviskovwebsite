@@ -46,7 +46,7 @@ export default function LiviSkoviPage() {
           <CardHeader className="pb-2">
             <CardTitle className="text-3xl font-tan-garland mb-2">Um novo ano, um recomeço</CardTitle>
             <CardDescription className="text-base font-clear-sans">
-              31 dias de encorajamento, renovo e recomeços na palavra
+              "Um novo ano, um recomeço" é um devocional de 31 dias que nasceu das profundezas de um processo de fé, transições e recomeços. Livi Skov convida você a uma jornada sincera para permanecer em Deus, mesmo quando tudo parece incerto. Descubra verdades sobre dores, esperas, identidade e esperança, e permita que estas páginas transformem sua caminhada com Deus.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center p-0">
