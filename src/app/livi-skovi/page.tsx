@@ -71,7 +71,7 @@ export default function LiviSkoviPage() {
           
           {/* Sinopse - à direita na versão desktop, abaixo na versão mobile */}
           <div className="w-full md:w-1/2">
-            <blockquote className="text-white text-lg md:text-xl font-serif italic text-center p-4 md:p-8 bg-black/30 backdrop-blur-sm rounded-lg border-l-4 border-custom-green">
+            <blockquote className="text-white text-lg md:text-xl font-serif italic text-center p-4 md:p-8 bg-[#224D3C] rounded-lg border-l-4 border-custom-green">
               "Um novo ano, um recomeço" é um devocional de 31 dias que nasceu das profundezas do meu processo de fé, transições e recomeços. Eu te convido a uma jornada sincera para permanecer em Deus, mesmo quando tudo parece incerto. Descubra verdades sobre dores, esperas, identidade e esperança, e permita que estas páginas transformem sua caminhada com Deus.
               <br /><br />
               Acompanhe também uma jornada especial em janeiro! Todos os dias deste mês, estarei lançando um vídeo no meu Instagram <a href="https://www.instagram.com/liviskov" target="_blank" rel="noopener noreferrer" className="text-custom-green hover:underline">@liviskov</a>, ministrando cada dia do livro. Não perca essa oportunidade de aprofundar sua fé!
