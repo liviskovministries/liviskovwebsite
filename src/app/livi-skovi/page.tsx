@@ -52,30 +52,28 @@ export default function LiviSkoviPage() {
             </blockquote>
           </div>
 
-          {/* Card com título, capa e botão */}
-          <Card className="w-full bg-white/90 backdrop-blur-sm shadow-xl border border-custom-green/50 text-custom-green p-4 flex flex-col items-center md:flex-row md:items-center md:gap-8">
+          {/* Card com título, capa e botão - um abaixo do outro */}
+          <Card className="w-full bg-white/90 backdrop-blur-sm shadow-xl border border-custom-green/50 text-custom-green p-6 flex flex-col items-center">
+            <CardTitle className="text-3xl font-tan-garland mb-6 text-center">Um novo ano, um recomeço</CardTitle>
             <Image
               src="/livro.jpg"
               alt="Capa do Livro: Um novo ano, um recomeço"
               width={300} 
               height={450} 
-              className="rounded-lg shadow-lg object-contain w-full h-auto max-w-[200px] md:max-w-[300px] mb-4 md:mb-0"
+              className="rounded-lg shadow-lg object-contain w-full h-auto max-w-[300px] mb-6"
             />
-            <div className="flex flex-col items-center md:items-start md:flex-1">
-              <CardTitle className="text-3xl font-tan-garland mb-4 text-center md:text-left md:mb-6">Um novo ano, um recomeço</CardTitle>
-              <Button
-                className="bg-custom-green hover:bg-custom-green/90 text-custom-white font-clear-sans text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 ease-in-out mb-4 md:mb-6"
-                onClick={() => router.push('/livi-skovi/pre-sale')}
-              >
-                Adquira já!
-              </Button>
-              <CardHeader className="pb-2 text-center p-0 md:text-left md:p-0">
-                {/* Conteúdo vazio, mantido para estrutura do Shadcn */}
-              </CardHeader>
-              <CardContent className="flex justify-center p-0">
-                {/* Conteúdo vazio, mantido para estrutura do Shadcn */}
-              </CardContent>
-            </div>
+            <Button
+              className="bg-custom-green hover:bg-custom-green/90 text-custom-white font-clear-sans text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 ease-in-out"
+              onClick={() => router.push('/livi-skovi/pre-sale')}
+            >
+              Adquira já!
+            </Button>
+            <CardHeader className="hidden">
+              {/* Ocultando para manter estrutura do Shadcn */}
+            </CardHeader>
+            <CardContent className="hidden">
+              {/* Ocultando para manter estrutura do Shadcn */}
+            </CardContent>
           </Card>
         </div>
       </main>
