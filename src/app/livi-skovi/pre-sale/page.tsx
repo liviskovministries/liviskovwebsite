@@ -30,7 +30,7 @@ export default function PreSalePage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // Código PIX fornecido
+  // Código PIX fornecido (mantido o mesmo, apenas a descrição do valor muda)
   const pixCode = "00020126580014BR.GOV.BCB.PIX0136b31658e9-229f-4d7f-8ef5-863ad2c3316c520400005303986540520.005802BR592563.833.293 LIVI DOMITILA 6009SAO PAULO610805409000622505211BC0GLqKCSYhZ3t6nz1ue630407BE";
 
   const { register, handleSubmit, formState: { errors, isValid }, trigger } = useForm<FormValues>({
@@ -38,7 +38,6 @@ export default function PreSalePage() {
     mode: "onSubmit", // Valida apenas na submissão
   });
 
-  // Adicionando um useEffect para logar erros de validação, especialmente para o WhatsApp
   useEffect(() => {
     if (errors.whatsapp) {
       console.error("Erro de validação no WhatsApp:", errors.whatsapp.message);
@@ -69,14 +68,13 @@ export default function PreSalePage() {
 
     setIsLoading(true);
     try {
-      // Log the data being sent to Supabase
       console.log("Dados a serem inseridos no Supabase:", {
         name: data.name,
         email: data.email,
         whatsapp: data.whatsapp,
       });
       
-      console.log("Supabase client before insert:", supabase); // Log do cliente Supabase
+      console.log("Supabase client before insert:", supabase);
 
       const { error } = await (supabase as SupabaseClient)
         .from("pre_sales")
@@ -84,14 +82,11 @@ export default function PreSalePage() {
           {
             name: data.name,
             email: data.email,
-            whatsapp: data.whatsapp, // O valor já foi transformado e validado pelo Zod
+            whatsapp: data.whatsapp,
           }
         ]);
       
       if (error) {
-        // Log the full error object as a string
-        // console.error("Erro Supabase completo:", error); // Removido
-        // console.error("Erro Supabase JSON:", JSON.stringify(error, null, 2)); // Removido
         console.error("Detalhes do erro Supabase (propriedades):", {
           code: error.code,
           message: error.message,
@@ -169,8 +164,8 @@ export default function PreSalePage() {
           {step === "form" ? (
             <>
               <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-tan-garland text-custom-green">Pré-Venda Exclusiva</CardTitle>
-                <CardDescription>Garanta seu acesso antecipado por apenas R$ 20,00</CardDescription>
+                <CardTitle className="text-2xl font-tan-garland text-custom-green">Adquira seu Livro!</CardTitle>
+                <CardDescription>Preencha seus dados para comprar "Um novo ano, um recomeço" por R$ 30,00</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -230,7 +225,7 @@ export default function PreSalePage() {
                   <CheckCircle2 className="h-12 w-12 text-green-600" />
                 </div>
                 <CardTitle className="text-2xl font-tan-garland text-custom-green">Quase lá!</CardTitle>
-                <CardDescription>Realize o pagamento de R$ 20,00 via PIX para confirmar.</CardDescription>
+                <CardDescription>Realize o pagamento de R$ 30,00 via PIX para confirmar a compra do seu livro.</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center space-y-6">
                 <div className="relative w-64 h-64 bg-gray-100 rounded-lg overflow-hidden border-4 border-white shadow-md">
