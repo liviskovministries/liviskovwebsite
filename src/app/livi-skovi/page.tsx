@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState, useEffect } => "react";
+import { useState, useEffect } from "react"; // Correção aqui: de '=>' para 'from'
 import { Toaster } from "@/components/ui/sonner";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"; // Importando os componentes Card
