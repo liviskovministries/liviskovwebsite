@@ -42,7 +42,7 @@ export default function LiviSkoviPage() {
         </div>
 
         {/* Novo espaço de destaque de propaganda */}
-        <Card className="w-full max-w-sm md:max-w-md bg-white/90 backdrop-blur-sm shadow-xl border-none text-custom-green p-4 flex flex-col items-center">
+        <Card className="w-full max-w-sm md:max-w-md bg-white/90 backdrop-blur-sm shadow-xl border border-custom-green/50 text-custom-green p-4 flex flex-col items-center">
           <CardTitle className="text-3xl font-tan-garland mb-4 text-center">Um novo ano, um recomeço</CardTitle>
           <Image
             src="/livro.jpg"
