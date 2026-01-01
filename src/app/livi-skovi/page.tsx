@@ -42,7 +42,7 @@ export default function LiviSkoviPage() {
         </div>
 
         {/* Novo espaço de destaque de propaganda */}
-        <Card className="w-full max-w-sm md:max-w-4xl bg-white/90 backdrop-blur-sm shadow-xl border border-custom-green/50 text-custom-green p-4 flex flex-col items-center md:flex-row md:items-start md:gap-8">
+        <Card className="w-full max-w-sm md:max-w-4xl bg-white/90 backdrop-blur-sm shadow-xl border border-custom-green/50 text-custom-green p-4 flex flex-col items-center md:flex-row md:items-center md:gap-8">
           <Image
             src="/livro.jpg"
             alt="Capa do Livro: Um novo ano, um recomeço"
