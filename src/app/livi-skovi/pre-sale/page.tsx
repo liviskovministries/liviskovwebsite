@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, RefreshCw, Copy } from "lucide-react";
+import { ArrowLeft, CheckCircle2, RefreshCw } from "lucide-react";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 const formSchema = z.object({
@@ -30,8 +30,8 @@ export default function PreSalePage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // Código PIX fornecido
-  const pixCode = "00020126580014BR.GOV.BCB.PIX0136b31658e9-229f-4d7f-8ef5-863ad2c3316c520400005303986540520.005802BR592563.833.293 LIVI DOMITILA 6009SAO PAULO610805409000622505211BC0GLqKCSYhZ3t6nz1ue630407BE";
+  // Link do checkout do Nubank
+  const nubankCheckoutLink = "https://checkout.nubank.com.br/paSE598LHj6nz1ue";
 
   const { register, handleSubmit, formState: { errors, isValid }, trigger } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -89,9 +89,6 @@ export default function PreSalePage() {
         ]);
       
       if (error) {
-        // Log the full error object as a string
-        // console.error("Erro Supabase completo:", error); // Removido
-        // console.error("Erro Supabase JSON:", JSON.stringify(error, null, 2)); // Removido
         console.error("Detalhes do erro Supabase (propriedades):", {
           code: error.code,
           message: error.message,
@@ -122,16 +119,6 @@ export default function PreSalePage() {
     } finally {
       setIsLoading(false);
       console.log("setIsLoading(false) chamado.");
-    }
-  };
-
-  const handleCopyPixCode = async () => {
-    try {
-      await navigator.clipboard.writeText(pixCode);
-      toast.success("Código PIX copiado!");
-    } catch (err) {
-      toast.error("Falha ao copiar o código PIX.");
-      console.error("Failed to copy PIX code: ", err);
     }
   };
 
@@ -239,38 +226,15 @@ export default function PreSalePage() {
                   <CheckCircle2 className="h-12 w-12 text-green-600" />
                 </div>
                 <CardTitle className="text-2xl font-tan-garland text-custom-green">Quase lá!</CardTitle>
-                <CardDescription>Realize o pagamento de R$ 20,00 via PIX para confirmar.</CardDescription>
+                <CardDescription>Realize o pagamento de R$ 30,00 via Nubank para confirmar.</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center space-y-6">
-                <div className="relative w-64 h-64 bg-gray-100 rounded-lg overflow-hidden border-4 border-white shadow-md">
-                  <Image 
-                    src="/pix-qr-code.png" 
-                    alt="QR Code PIX" 
-                    fill 
-                    className="object-contain" 
-                  />
-                </div>
-
-                <div className="max-w-sm space-y-2">
-                  <Label htmlFor="pix-code" className="text-center">Código PIX</Label>
-                  <div className="flex w-full items-center space-x-2">
-                    <Input 
-                      id="pix-code" 
-                      value={pixCode} 
-                      readOnly 
-                      className="flex-grow"
-                    />
-                    <Button 
-                      type="button" 
-                      onClick={handleCopyPixCode} 
-                      variant="outline" 
-                      size="icon"
-                      className="bg-custom-green hover:bg-custom-green/90 text-white"
-                    >
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+                <Button 
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-6 text-lg"
+                  onClick={() => window.open(nubankCheckoutLink, "_blank", "noopener noreferrer")}
+                >
+                  Pagar com Nubank
+                </Button>
                 
                 <Button 
                   className="w-full bg-custom-green hover:bg-custom-green/90 text-white rounded-xl py-6"
