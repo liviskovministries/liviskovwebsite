@@ -168,9 +168,18 @@ export default function PreSalePage() {
         <Card className="bg-white/95 backdrop-blur shadow-2xl border-none w-full">
           {step === "form" ? (
             <>
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-tan-garland text-custom-green">Compre o Livro</CardTitle>
-                <CardDescription>Garanta seu livro agora por apenas R$ 30,00</CardDescription>
+              <CardHeader className="text-center flex-row items-center justify-center gap-4"> {/* Adicionado flex-row e items-center */}
+                <Image
+                  src="/livro.jpg"
+                  alt="Capa do Livro"
+                  width={80} // Tamanho da miniatura
+                  height={120} // Tamanho da miniatura
+                  className="object-contain rounded-sm shadow-md"
+                />
+                <div> {/* Wrapper para o título e descrição */}
+                  <CardTitle className="text-2xl font-tan-garland text-custom-green">Compre o Livro</CardTitle>
+                  <CardDescription>Garanta seu livro agora por apenas R$ 30,00</CardDescription>
+                </div>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
