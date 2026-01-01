@@ -43,21 +43,22 @@ export default function LiviSkoviPage() {
 
         {/* Novo espaço de destaque de propaganda */}
         <Card className="w-full max-w-sm md:max-w-md bg-white/90 backdrop-blur-sm shadow-xl border-none text-custom-green p-4">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-3xl font-tan-garland mb-2">Um novo ano, um recomeço</CardTitle>
-            <CardDescription className="text-base font-clear-sans">
-              "Um novo ano, um recomeço" é um devocional de 31 dias que nasceu das profundezas de um processo de fé, transições e recomeços. Livi Skov convida você a uma jornada sincera para permanecer em Deus, mesmo quando tudo parece incerto. Descubra verdades sobre dores, esperas, identidade e esperança, e permita que estas páginas transformem sua caminhada com Deus.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex justify-center p-0">
+          <CardHeader className="flex flex-row items-center gap-4 pb-2"> {/* Adicionado flex para alinhar imagem e texto */}
             <Image
               src="/livro.jpg"
               alt="Capa do Livro: Um novo ano, um recomeço"
-              width={300} 
-              height={450} 
-              className="rounded-lg shadow-lg object-contain w-full h-auto max-w-[200px] md:max-w-[300px]"
+              width={100} // Tamanho ajustado para o layout lateral
+              height={150} // Tamanho ajustado para o layout lateral
+              className="rounded-lg shadow-md object-contain flex-shrink-0" // Garante que a imagem não encolha
             />
-          </CardContent>
+            <div> {/* Wrapper para o título e descrição */}
+              <CardTitle className="text-2xl font-tan-garland mb-1">Um novo ano, um recomeço</CardTitle> {/* Tamanho do título ajustado */}
+              <CardDescription className="text-sm font-clear-sans"> {/* Tamanho da descrição ajustado */}
+                "Um novo ano, um recomeço" é um devocional de 31 dias que nasceu das profundezas de um processo de fé, transições e recomeços. Livi Skov convida você a uma jornada sincera para permanecer em Deus, mesmo quando tudo parece incerto. Descubra verdades sobre dores, esperas, identidade e esperança, e permita que estas páginas transformem sua caminhada com Deus.
+              </CardDescription>
+            </div>
+          </CardHeader>
+          {/* CardContent removido, pois a imagem agora está no CardHeader */}
         </Card>
 
         <Button
