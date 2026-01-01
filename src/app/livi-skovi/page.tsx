@@ -53,7 +53,9 @@ export default function LiviSkoviPage() {
           />
           <CardHeader className="pb-2 text-center p-0">
             <CardDescription className="text-base font-clear-sans">
-              "Um novo ano, um recomeço" é um devocional de 31 dias que nasceu das profundezas de um processo de fé, transições e recomeços. Livi Skov convida você a uma jornada sincera para permanecer em Deus, mesmo quando tudo parece incerto. Descubra verdades sobre dores, esperas, identidade e esperança, e permita que estas páginas transformem sua caminhada com Deus.
+              "Um novo ano, um recomeço" é um devocional de 31 dias que nasceu das profundezas do meu processo de fé, transições e recomeços. Eu te convido a uma jornada sincera para permanecer em Deus, mesmo quando tudo parece incerto. Descubra verdades sobre dores, esperas, identidade e esperança, e permita que estas páginas transformem sua caminhada com Deus.
+              <br /><br />
+              Acompanhe também 31 vídeos no meu Instagram <a href="https://www.instagram.com/liviskov" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">@liviskov</a>, um para cada dia do livro, com ministrações especiais!
             </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center p-0">
