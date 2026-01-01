@@ -170,7 +170,7 @@ export default function PreSalePage() {
             <>
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl font-tan-garland text-custom-green">Pré-Venda Exclusiva</CardTitle>
-                <CardDescription>Garanta seu acesso antecipado por apenas R$ 20,00</CardDescription>
+                <CardDescription>Garanta seu livro por apenas de R$ 30,00</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
