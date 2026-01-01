@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect } => "react";
 import { Toaster } from "@/components/ui/sonner";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"; // Importando os componentes Card
@@ -47,8 +47,8 @@ export default function LiviSkoviPage() {
             <Image
               src="/livro.jpg"
               alt="Capa do Livro: Um novo ano, um recomeço"
-              width={100} // Tamanho ajustado para o layout lateral
-              height={150} // Tamanho ajustado para o layout lateral
+              width={120} // Tamanho ajustado para o layout lateral
+              height={180} // Tamanho ajustado para o layout lateral
               className="rounded-lg shadow-md object-contain flex-shrink-0" // Garante que a imagem não encolha
             />
             <div> {/* Wrapper para o título e descrição */}
