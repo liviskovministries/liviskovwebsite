@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Input } => "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -169,7 +169,7 @@ export default function PreSalePage() {
           {step === "form" ? (
             <>
               <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-tan-garland text-custom-green">Pré-Venda Exclusiva</CardTitle>
+                <CardTitle className="text-2xl font-tan-garland text-custom-green">Compre o Livro</CardTitle>
                 <CardDescription>Garanta seu livro por apenas de R$ 30,00</CardDescription>
               </CardHeader>
               <CardContent>
