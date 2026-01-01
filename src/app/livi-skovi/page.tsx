@@ -58,17 +58,15 @@ export default function LiviSkoviPage() {
               Acompanhe também uma jornada especial em janeiro! Todos os dias deste mês, estarei lançando um vídeo no meu Instagram <a href="https://www.instagram.com/liviskov" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">@liviskov</a>, ministrando cada dia do livro. Não perca essa oportunidade de aprofundar sua fé!
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex justify-center p-0">
-            {/* A imagem foi movida para fora do CardContent */}
+          <CardContent className="flex justify-center p-0 pt-4"> {/* Adicionei um padding-top para espaçamento */}
+            <Button
+              className="bg-custom-green hover:bg-custom-green/90 text-custom-white font-clear-sans text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 ease-in-out"
+              onClick={() => router.push('/livi-skovi/pre-sale')}
+            >
+              Adquira já!
+            </Button>
           </CardContent>
         </Card>
-
-        <Button
-          className="bg-custom-green hover:bg-custom-green/90 text-custom-white font-clear-sans text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 ease-in-out"
-          onClick={() => router.push('/livi-skovi/pre-sale')}
-        >
-          Adquira já!
-        </Button>
       </main>
       <Toaster />
     </div>
